@@ -1,0 +1,23 @@
+﻿using System.Collections.Generic;
+
+namespace TVProgram.Providers.Abstract
+{
+    abstract class CrudProviderBase<TEntity, TPrimaryKey>
+    {
+        protected string connectionString = $@"
+            Data Source=.\SQLEXPRESS02;
+            Initial Catalog=TVProgramDb;
+            Integrated Security=True;
+            Connect Timeout=30;
+            Encrypt=False;
+            TrustServerCertificate=False;
+            ApplicationIntent=ReadWrite;
+            MultiSubnetFailover=False;";
+
+        public abstract IReadOnlyCollection<TEntity> GetAll();
+        public abstract TEntity Get(TPrimaryKey pk);
+        public abstract void Add(TEntity entity);
+        public abstract void Update(TPrimaryKey pk, TEntity entity);
+        public abstract void Delete(TPrimaryKey pk);
+    }
+}
