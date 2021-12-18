@@ -1,6 +1,6 @@
 ﻿namespace TVProgram.Models
 {
-    class TVProgram
+    class TVProgram : IModel
     {
         public int IDChannel { get; set; }
         public TVChannel Channel { get; set; }

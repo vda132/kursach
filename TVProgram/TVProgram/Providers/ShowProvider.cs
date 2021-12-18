@@ -5,33 +5,29 @@ using TVProgram.Providers.Abstract;
 
 namespace TVProgram.Providers
 {
-    class ProgramProvider : CrudProviderBase<Models.TVProgram, TVProgramPK>
+    class ShowProvider : CrudProviderBase<Models.TVShow, int>
     {
-        public ProgramProvider() 
-        {         
-        }
-
-        public override void Add(Models.TVProgram entity)
+        public override void Add(TVShow entity)
         {
             throw new NotImplementedException();
         }
 
-        public override void Delete(TVProgramPK pk)
+        public override void Delete(int pk)
         {
             throw new NotImplementedException();
         }
 
-        public override Models.TVProgram Get(TVProgramPK pk)
+        public override TVShow Get(int pk)
         {
             throw new NotImplementedException();
         }
 
-        public override IReadOnlyCollection<Models.TVProgram> GetAll()
+        public override IReadOnlyCollection<TVShow> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public override void Update(TVProgramPK pk, Models.TVProgram entity)
+        public override void Update(int pk, TVShow entity)
         {
             throw new NotImplementedException();
         }

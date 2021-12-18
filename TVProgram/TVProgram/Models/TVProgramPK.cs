@@ -1,5 +1,8 @@
 ﻿namespace TVProgram.Models
 {
+    /// <summary>
+    /// To create base crud provider
+    /// </summary>
     class TVProgramPK
     {
         public int IDChannel { get; set; }

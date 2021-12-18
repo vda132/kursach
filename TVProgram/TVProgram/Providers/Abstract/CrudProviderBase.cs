@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using TVProgram.Models;
 
 namespace TVProgram.Providers.Abstract
 {
-    abstract class CrudProviderBase<TEntity, TPrimaryKey>
+    abstract class CrudProviderBase<TEntity, TPrimaryKey> where TEntity : IModel
     {
         protected string connectionString = $@"
             Data Source=.\SQLEXPRESS02;
