@@ -22,7 +22,7 @@ namespace TVProgram.Providers.Factories
 
         public static ProviderFactory GetInstance()
         {
-            return instance == null ? new ProviderFactory() : instance;
+            return instance == null ? (instance = new ProviderFactory()) : instance;
         }
     }
 }

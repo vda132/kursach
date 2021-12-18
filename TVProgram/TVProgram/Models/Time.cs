@@ -57,6 +57,13 @@ namespace TVProgram.Models
             if (!isValid) throw new ArgumentException();
         }
 
+        public static Time FromString(string time)
+        {
+            var hours = int.Parse(time.Substring(0, 2));
+            var minutes = int.Parse(time.Substring(3, 2));
+            return new Time(hours, minutes);
+        }
+
         public override string ToString()
         {
             return NumberToString(_hours) + ":" + NumberToString(_minutes);

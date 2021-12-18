@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Data.SqlClient;
+using System.Collections.Generic;
 using TVProgram.Models;
 
 namespace TVProgram.Providers.Abstract
 {
     abstract class CrudProviderBase<TEntity, TPrimaryKey> where TEntity : IModel
     {
-        protected string connectionString = $@"
+        private string connectionString = $@"
             Data Source=.\SQLEXPRESS02;
             Initial Catalog=TVProgramDb;
             Integrated Security=True;
@@ -15,10 +16,17 @@ namespace TVProgram.Providers.Abstract
             ApplicationIntent=ReadWrite;
             MultiSubnetFailover=False;";
 
+        protected SqlConnection GetConnection()
+        {
+            return new SqlConnection(connectionString);
+        }
+
+        #region Abstract
         public abstract IReadOnlyCollection<TEntity> GetAll();
         public abstract TEntity Get(TPrimaryKey pk);
         public abstract void Add(TEntity entity);
         public abstract void Update(TPrimaryKey pk, TEntity entity);
         public abstract void Delete(TPrimaryKey pk);
+        #endregion
     }
 }
