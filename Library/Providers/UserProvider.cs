@@ -15,7 +15,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"INSERT INTO Users(UserLogin, UserPassword, UserType) VALUES('{entity.UserLogin}',{entity.UserPassword}','{entity.UserType}')";
+                var query = $"INSERT INTO Users(UserLogin, UserPassword, UserType) VALUES('{entity.UserLogin}','{entity.UserPassword}','{entity.UserType}')";
                 var insert = new SqlCommand(query, connection);
                 insert.ExecuteNonQuery();
             }

@@ -29,7 +29,7 @@ namespace Library.Providers.Factories
             ThemeBookFundProvider = new ThemeBookFundProvider();
             UserProvider = new UserProvider();
         }
-
+       
         public static FactoryProvider GetInstance()
         {
             return instance == null ? (instance = new FactoryProvider()) : instance;
