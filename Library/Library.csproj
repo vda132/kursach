@@ -68,10 +68,15 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\Abstract\CrudProviderBase.cs" />
+    <Compile Include="Providers\AuthorBookFundProvider.cs" />
     <Compile Include="Providers\AuthorProvider.cs" />
     <Compile Include="Providers\BookFundProvider.cs" />
+    <Compile Include="Providers\ExtraditionProvider.cs" />
+    <Compile Include="Providers\Factories\FactoryProvider.cs" />
     <Compile Include="Providers\ReaderProvider.cs" />
+    <Compile Include="Providers\ThemeBookFundProvider.cs" />
     <Compile Include="Providers\ThemeProvider.cs" />
+    <Compile Include="Providers\UserProvider.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -94,8 +99,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Providers\Factories\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

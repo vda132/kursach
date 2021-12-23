@@ -15,7 +15,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"INSERT INTO BookFund(BookID, LibraryBookNO, BookName, DateOfPublication, Capacity, Price) VALUES('{entity.BookID}','{entity.LibraryBookNO}','{entity.BookName}','{entity.DateOfPublication}','{entity.Capacity}','{entity.Capacity}')";
+                var query = $"INSERT INTO BookFund(BookID, LibraryBookNO, BookName, DateOfPublication, Capacity, Price) VALUES({entity.BookID},{entity.LibraryBookNO},'{entity.BookName}','{entity.DateOfPublication}','{entity.Capacity}','{entity.Capacity}')";
                 var insert = new SqlCommand(query, connection);
                 insert.ExecuteNonQuery();
             }
@@ -73,16 +73,18 @@ namespace Library.Providers
                 var result = select.ExecuteReader();
                 if (result.HasRows)
                 {
-                    result.Read();
-                    bookFunds.Add(new BookFund
+                    while (result.Read())
                     {
-                        BookID = (int)result["BookID"],
-                        LibraryBookNO = (int)result["LibraryBookNO"],
-                        BookName = (string)result["BookName"],
-                        DateOfPublication = (DateTime)result["DateOfPublication"],
-                        Capacity = (int)result["Capacity"],
-                        Price = (decimal)result["Price"]
-                    });
+                        bookFunds.Add(new BookFund
+                        {
+                            BookID = (int)result["BookID"],
+                            LibraryBookNO = (int)result["LibraryBookNO"],
+                            BookName = (string)result["BookName"],
+                            DateOfPublication = (DateTime)result["DateOfPublication"],
+                            Capacity = (int)result["Capacity"],
+                            Price = (decimal)result["Price"]
+                        });
+                    }
                 }
             }
             BookFundPK pk = new BookFundPK();
@@ -101,7 +103,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"UPDATE BookFund SET BookName={entity.BookName}, DateOfPublication={entity.DateOfPublication}, Capacity={entity.Capacity}, Price={entity.Price} WHERE BookID='{pk.BookID}' AND LibraryBookNo='{pk.LibraryBookNO}'";
+                var query = $"UPDATE BookFund SET BookName='{entity.BookName}', DateOfPublication='{entity.DateOfPublication}', Capacity={entity.Capacity}, Price={entity.Price} WHERE BookID={pk.BookID} AND LibraryBookNo={pk.LibraryBookNO}";
                 var update = new SqlCommand(query, connection);
                 update.ExecuteNonQuery();
             }
@@ -111,7 +113,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"SELECT BookID, LibraryBookNo, ReaderNo, DateOfExtradition, DateOfReturn, Information from Extradition WHERE BookID='{pk.BookID}' AND LibraryBookNo='{pk.LibraryBookNO}'";
+                var query = $"SELECT BookID, LibraryBookNo, ReaderNo, DateOfExtradition, DateOfReturn, Information from Extradition WHERE BookID={pk.BookID} AND LibraryBookNo={pk.LibraryBookNO}";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
 
@@ -138,7 +140,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"SELECT BookID, LibraryBookNO, AuthorID from AuthorBookFund WHERE BookID='{pk.BookID}' AND LibraryBookNo='{pk.LibraryBookNO}'";
+                var query = $"SELECT BookID, LibraryBookNO, AuthorID from AuthorBookFund WHERE BookID={pk.BookID} AND LibraryBookNo={pk.LibraryBookNO}";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
 
@@ -162,7 +164,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"SELECT BookID, LibraryBookNO, ThemeID  from ThemeBookFund WHERE BookID='{pk.BookID}' AND LibraryBookNo='{pk.LibraryBookNO}'";
+                var query = $"SELECT BookID, LibraryBookNO, ThemeID  from ThemeBookFund WHERE BookID={pk.BookID} AND LibraryBookNo={pk.LibraryBookNO}";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
 

@@ -15,7 +15,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"INSERT INTO Author(AuthorID, AuthorName) VALUES('{entity.AuthorID}','{entity.AuthorName}')";
+                var query = $"INSERT INTO Author(AuthorID, AuthorName) VALUES({entity.AuthorID},'{entity.AuthorName}')";
                 var insert = new SqlCommand(query, connection);
                 insert.ExecuteNonQuery();
             }
@@ -67,16 +67,14 @@ namespace Library.Providers
                 var result = select.ExecuteReader();
                 if (result.HasRows)
                 {
-                    result.Read();
-                    authors.Add(new Author
+                    while (result.Read())
                     {
-                        AuthorID = (int)result["AuthorID"],
-                        AuthorName = (string)result["AuthorName"],
-                    });
-                }
-                else
-                {
-                    throw new ArgumentException("Author has not been found.");
+                        authors.Add(new Author
+                        {
+                            AuthorID = (int)result["AuthorID"],
+                            AuthorName = (string)result["AuthorName"],
+                        });
+                    }
                 }
             }
             foreach (var author in authors)
@@ -88,7 +86,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"UPDATE Author SET Author={entity.AuthorName} WHERE AuthorID = {entity.AuthorID}";
+                var query = $"UPDATE Author SET AuthorName='{entity.AuthorName}' WHERE AuthorID = {pk}";
                 var update = new SqlCommand(query, connection);
                 update.ExecuteNonQuery();
             }
@@ -97,7 +95,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"SELECT BookID, LibraryBookNo, AuthorID from AuthorBookFund WHERE AuthorID='{id}'";
+                var query = $"SELECT BookID, LibraryBookNo, AuthorID from AuthorBookFund WHERE AuthorID={id}";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
 

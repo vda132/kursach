@@ -15,7 +15,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"INSERT INTO Theme(ThemeID, ThemeName) VALUES('{entity.ThemeId}','{entity.ThemeName}')";
+                var query = $"INSERT INTO Theme(ThemeID, ThemeName) VALUES({entity.ThemeId},'{entity.ThemeName}')";
                 var insert = new SqlCommand(query, connection);
                 insert.ExecuteNonQuery();
             }
@@ -50,7 +50,7 @@ namespace Library.Providers
                 }
                 else
                 {
-                    throw new ArgumentException("Reader has not been found.");
+                    throw new ArgumentException("Theme has not been found.");
                 }
             }
             theme.ThemeBookFunds = GetThemeBookFund(pk);
@@ -95,7 +95,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"SELECT BookID, LibraryBookNo, ThemeID from ThemeBookFund WHERE ReaderNo='{pk}'";
+                var query = $"SELECT BookID, LibraryBookNo, ThemeID from ThemeBookFund WHERE ReaderNo={pk}";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
 

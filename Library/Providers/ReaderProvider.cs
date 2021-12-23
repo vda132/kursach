@@ -15,7 +15,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"INSERT INTO Reader(ReaderNo, ReaderName, Adress, Phone) VALUES('{entity.ReaderNo}',{entity.ReaderName}','{entity.Adress}','{entity.Phone}')";
+                var query = $"INSERT INTO Reader(ReaderNo, ReaderName, Adress, Phone) VALUES({entity.ReaderNo},'{entity.ReaderName}','{entity.Adress}','{entity.Phone}')";
                 var insert = new SqlCommand(query, connection);
                 insert.ExecuteNonQuery();
             }
@@ -90,7 +90,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"UPDATE Reader SET ReaderName={entity.ReaderName}, Adress={entity.Adress}, Phone={entity.Phone} WHERE ReaderNo={entity.ReaderNo}";
+                var query = $"UPDATE Reader SET ReaderName='{entity.ReaderName}', Adress='{entity.Adress}', Phone='{entity.Phone}' WHERE ReaderNo={entity.ReaderNo}";
                 var update = new SqlCommand(query, connection);
                 update.ExecuteNonQuery();
             }
@@ -100,7 +100,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"SELECT BookID, LibraryBookNo, ReaderNo, DateOfExtradition, DateOfReturn, Information from Extradition WHERE ReaderNo='{pk}'";
+                var query = $"SELECT BookID, LibraryBookNo, ReaderNo, DateOfExtradition, DateOfReturn, Information from Extradition WHERE ReaderNo={pk}";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
 

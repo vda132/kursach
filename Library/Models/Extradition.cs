@@ -15,7 +15,7 @@ namespace Library.Models
         public DateTime DateOfExtradition { get; set; }
         public DateTime DateOfReturn { get; set; }
         public string Information { get; set; }
-        public BookFund BookFundNavigation { get; set; }
-        public Reader ReaderNavigation { get; set; }
+        public BookFund BookFund { get; set; }
+        public Reader Reader { get; set; }
     }
 }
