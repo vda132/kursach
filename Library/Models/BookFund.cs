@@ -15,6 +15,7 @@ namespace Library.Models
         public DateTime DateOfPublication { get; set; }
         public int Capacity { get; set; }
         public decimal Price { get; set; }
+        public bool BookStatus { get; set; }
         public IReadOnlyCollection<Extradition> Extraditions { get; set; } = new List<Extradition>();
         public IReadOnlyCollection<ThemeBookFund> ThemeBookFunds { get; set; } = new List<ThemeBookFund>();
         public IReadOnlyCollection<AuthorBookFund> AuthorBookFunds { get; set; } = new List<AuthorBookFund>();
