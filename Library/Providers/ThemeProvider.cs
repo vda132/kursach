@@ -15,7 +15,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"INSERT INTO Theme(ThemeID, ThemeName) VALUES({entity.ThemeId},'{entity.ThemeName}')";
+                var query = $"INSERT INTO Theme(ThemeName) VALUES('{entity.ThemeName}')";
                 var insert = new SqlCommand(query, connection);
                 insert.ExecuteNonQuery();
             }

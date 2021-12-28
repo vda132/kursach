@@ -15,7 +15,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"INSERT INTO BookFund(BookID, LibraryBookNO, BookName, DateOfPublication, Capacity, Price) VALUES({entity.BookID},{entity.LibraryBookNO},'{entity.BookName}','{entity.DateOfPublication}','{entity.Capacity}','{entity.Capacity}')";
+                var query = $"INSERT INTO BookFund(BookID, BookName, DateOfPublication, Capacity, Price) VALUES({entity.BookID},'{entity.BookName}','{entity.DateOfPublication}','{entity.Capacity}','{entity.Capacity}')";
                 var insert = new SqlCommand(query, connection);
                 insert.ExecuteNonQuery();
             }

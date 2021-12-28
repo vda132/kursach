@@ -15,7 +15,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"INSERT INTO Reader(ReaderNo, ReaderName, Adress, Phone) VALUES({entity.ReaderNo},'{entity.ReaderName}','{entity.Adress}','{entity.Phone}')";
+                var query = $"INSERT INTO Reader(ReaderName, Adress, Phone) VALUES('{entity.ReaderName}','{entity.Adress}','{entity.Phone}')";
                 var insert = new SqlCommand(query, connection);
                 insert.ExecuteNonQuery();
             }

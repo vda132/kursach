@@ -27,14 +27,8 @@ namespace Library.Forms
 
         private bool IsValid()
         {
-            if (providerFactory.UserProvider.GetAll().Select(user => user.UserLogin).Contains(loginTextBox.Text))
-            {
-                MessageBox.Show("Пользователь с таким логином уже существует", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
             if (string.IsNullOrEmpty(passwordTextBox1.Text) ||
                 string.IsNullOrEmpty(passwordTextBox2.Text) ||
-                string.IsNullOrEmpty(loginTextBox.Text) ||
                 string.IsNullOrEmpty(readerNameTextBox.Text)||
                 string.IsNullOrEmpty(adressTextBox.Text)||
                 string.IsNullOrEmpty(phoneTextBox.Text))
@@ -65,20 +59,18 @@ namespace Library.Forms
         {
             if (IsValid())
             {
-                int count = providerFactory.UserProvider.GetAll().Count;
-                int readerId = ++count;
                 try
                 {
                     providerFactory.ReaderProvider.Add(new Models.Reader
                     {
-                        ReaderNo = readerId,
                         ReaderName = readerNameTextBox.Text,
                         Adress = adressTextBox.Text,
                         Phone = phoneTextBox.Text
                     });
+                    int id = providerFactory.ReaderProvider.GetAll().Max(A => A.ReaderNo);
                     providerFactory.UserProvider.Add(new Models.Users
                     {
-                        UserLogin = loginTextBox.Text,
+                        UserLogin = id.ToString(),
                         UserPassword = passwordTextBox1.Text,
                         UserType = userType
                     });

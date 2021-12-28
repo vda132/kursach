@@ -87,7 +87,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"UPDATE Users SET UserLogin={entity.UserLogin}, UserPassword={entity.UserPassword}, UserType={entity.UserType} WHERE IDUser={pk}";
+                var query = $"UPDATE Users SET UserLogin='{entity.UserLogin}', UserPassword='{entity.UserPassword}', UserType='{entity.UserType}' WHERE IDUser={pk}";
                 var update = new SqlCommand(query, connection);
                 update.ExecuteNonQuery();
             }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Library.Models
 {
-    class Users:IModel
+    public class Users:IModel
     {
         public int IdUser { get; set; }
         public string UserLogin { get; set; }

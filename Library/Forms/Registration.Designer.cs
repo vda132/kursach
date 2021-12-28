@@ -30,8 +30,6 @@ namespace Library.Forms
         private void InitializeComponent()
         {
             this.RegistrationButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.loginTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.passwordTextBox1 = new System.Windows.Forms.TextBox();
             this.passwordTextBox2 = new System.Windows.Forms.TextBox();
@@ -46,7 +44,7 @@ namespace Library.Forms
             // 
             // RegistrationButton
             // 
-            this.RegistrationButton.Location = new System.Drawing.Point(135, 395);
+            this.RegistrationButton.Location = new System.Drawing.Point(141, 357);
             this.RegistrationButton.Name = "RegistrationButton";
             this.RegistrationButton.Size = new System.Drawing.Size(169, 39);
             this.RegistrationButton.TabIndex = 0;
@@ -54,27 +52,10 @@ namespace Library.Forms
             this.RegistrationButton.UseVisualStyleBackColor = true;
             this.RegistrationButton.Click += new System.EventHandler(this.RegistrationButton_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(166, 205);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(104, 17);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Введите логин";
-            // 
-            // loginTextBox
-            // 
-            this.loginTextBox.Location = new System.Drawing.Point(146, 225);
-            this.loginTextBox.Multiline = true;
-            this.loginTextBox.Name = "loginTextBox";
-            this.loginTextBox.Size = new System.Drawing.Size(148, 30);
-            this.loginTextBox.TabIndex = 2;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(159, 258);
+            this.label2.Location = new System.Drawing.Point(159, 218);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(114, 17);
             this.label2.TabIndex = 3;
@@ -82,7 +63,7 @@ namespace Library.Forms
             // 
             // passwordTextBox1
             // 
-            this.passwordTextBox1.Location = new System.Drawing.Point(146, 278);
+            this.passwordTextBox1.Location = new System.Drawing.Point(146, 238);
             this.passwordTextBox1.Multiline = true;
             this.passwordTextBox1.Name = "passwordTextBox1";
             this.passwordTextBox1.Size = new System.Drawing.Size(148, 30);
@@ -90,7 +71,7 @@ namespace Library.Forms
             // 
             // passwordTextBox2
             // 
-            this.passwordTextBox2.Location = new System.Drawing.Point(146, 339);
+            this.passwordTextBox2.Location = new System.Drawing.Point(146, 299);
             this.passwordTextBox2.Multiline = true;
             this.passwordTextBox2.Name = "passwordTextBox2";
             this.passwordTextBox2.Size = new System.Drawing.Size(148, 30);
@@ -99,7 +80,7 @@ namespace Library.Forms
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(148, 319);
+            this.label3.Location = new System.Drawing.Point(148, 279);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(146, 17);
             this.label3.TabIndex = 6;
@@ -171,8 +152,6 @@ namespace Library.Forms
             this.Controls.Add(this.passwordTextBox2);
             this.Controls.Add(this.passwordTextBox1);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.loginTextBox);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.RegistrationButton);
             this.Name = "Registration";
             this.Text = "Registration";
@@ -184,8 +163,6 @@ namespace Library.Forms
         #endregion
 
         private System.Windows.Forms.Button RegistrationButton;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox loginTextBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox passwordTextBox1;
         private System.Windows.Forms.TextBox passwordTextBox2;

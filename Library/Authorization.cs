@@ -16,6 +16,7 @@ namespace Library
     public partial class Authorization : Form
     {
         private FactoryProvider factoryProvider = FactoryProvider.GetInstance();
+
         public Authorization()
         {
             InitializeComponent();
@@ -44,6 +45,7 @@ namespace Library
             MessageBox.Show($"Вы вошли как {userCache.CurrentUser.UserType}.", "Успешно!", MessageBoxButtons.OK);
             ClearFields();
             this.Hide();
+            new WorkSpace(this, user).Show();
         }
 
         private void RegistrationButton_Click(object sender, EventArgs e)
