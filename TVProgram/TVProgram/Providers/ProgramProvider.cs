@@ -14,8 +14,6 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"INSERT INTO Program(IDChannel, IDShow, DayWeekBegin, DayWeekEnd, TimeBegin, TimeEnd) VALUES ({entity.IDChannel}, {entity.IDShow}, '{entity.StartWeekDay}', '{entity.EndWeekDay}', '{entity.StartTime}', '{entity.EndTime}')";
                 var insert = new SqlCommand(query, connection);
                 insert.ExecuteNonQuery();
@@ -26,8 +24,6 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"DELETE FROM Program WHERE IDChannel = {pk.IDChannel} and IDShow = {pk.IDShow} and DayWeekBegin = '{pk.StartDayOfWeek}' and  TimeBegin = '{pk.StartTime}'";
                 var delete = new SqlCommand(query, connection);
                 delete.ExecuteNonQuery();
@@ -38,8 +34,6 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"SELECT IDChannel, IDShow, DayWeekBegin, DayWeekEnd, TimeBegin, TimeEnd FROM Program WHERE IDChannel = {pk.IDChannel} and IDShow = {pk.IDShow} and DayWeekBegin = '{pk.StartDayOfWeek}' and  TimeBegin = '{pk.StartTime}'";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
@@ -47,18 +41,7 @@ namespace TVProgram.Providers
                 if (result.HasRows)
                 {
                     result.Read();
-
-                    return new Models.TVProgram
-                    {
-                        IDChannel = (int)result["IDChannel"],
-                        Channel = GetChannel((int)result["IDChannel"], connection),
-                        IDShow = (int)result["IDShow"],
-                        Show = GetShow((int)result["IDShow"], connection),
-                        StartWeekDay = (string)result["DayWeekBegin"],
-                        EndWeekDay = (string)result["DayWeekEnd"],
-                        StartTime = Time.FromString(result["TimeBegin"].ToString()),
-                        EndTime = Time.FromString(result["EndBegin"].ToString())
-                    };
+                    return GetProgram(result, connection);                    
                 }
                 throw new ArgumentException("Program has not been found");
             }
@@ -68,8 +51,6 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"SELECT IDChannel, IDShow, DayWeekBegin, DayWeekEnd, TimeBegin, TimeEnd FROM Program";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
@@ -79,17 +60,7 @@ namespace TVProgram.Providers
                 {
                     while (result.Read())
                     {
-                        programs.Add(new Models.TVProgram
-                        {
-                            IDChannel = (int)result["IDChannel"],
-                            Channel = GetChannel((int)result["IDChannel"], connection),
-                            IDShow = (int)result["IDShow"],
-                            Show = GetShow((int)result["IDShow"], connection),
-                            StartWeekDay = (string)result["DayWeekBegin"],
-                            EndWeekDay = (string)result["DayWeekEnd"],
-                            StartTime = Time.FromString(result["TimeBegin"].ToString()),
-                            EndTime = Time.FromString(result["EndBegin"].ToString())
-                        });
+                        programs.Add(GetProgram(result, connection));
                     }
                 }
                 return programs;
@@ -100,12 +71,25 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"UPDATE Channel SET IDChannel = {entity.IDChannel}, IDShow = {entity.IDShow}, DayWeekBegin = '{entity.StartWeekDay}', DayWeekEnd = '{entity.EndWeekDay}', TimeBegin = '{entity.StartTime}', TimeEnd = '{entity.EndTime}' WHERE IDChannel = {pk.IDChannel} and IDShow = {pk.IDShow} and DayWeekBegin = '{pk.StartDayOfWeek}' and  TimeBegin = '{pk.StartTime}'";
                 var update = new SqlCommand(query, connection);
                 update.ExecuteNonQuery();
             }
+        }
+
+        private Models.TVProgram GetProgram(SqlDataReader reader, SqlConnection connection)
+        {
+            return new Models.TVProgram
+            {
+                IDChannel = (int)reader["IDChannel"],
+                Channel = GetChannel((int)reader["IDChannel"], connection),
+                IDShow = (int)reader["IDShow"],
+                Show = GetShow((int)reader["IDShow"], connection),
+                StartWeekDay = (string)reader["DayWeekBegin"],
+                EndWeekDay = (string)reader["DayWeekEnd"],
+                StartTime = Time.FromString(reader["TimeBegin"].ToString()),
+                EndTime = Time.FromString(reader["EndBegin"].ToString())
+            };
         }
 
         private TVChannel GetChannel(int idChannel, SqlConnection connection)

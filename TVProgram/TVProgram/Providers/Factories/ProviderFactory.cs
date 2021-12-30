@@ -11,13 +11,14 @@ namespace TVProgram.Providers.Factories
         public CrudProviderBase<Models.TVGenre, int> GenreProvider { get; init; }
         public CrudProviderBase<Models.TVShow, int> ShowProvider { get; init; }
         public CrudProviderBase<Models.TVProgram, TVProgramPK> ProgramProvider { get; init; }
-
+        public UserProvider UserProvider { get; init; }
         private ProviderFactory()
         {
             ChannelProvider = new ChannelProvider();
             GenreProvider = new GenreProvider();
             ShowProvider = new ShowProvider();
             ProgramProvider = new ProgramProvider();
+            UserProvider = new UserProvider();
         }
 
         public static ProviderFactory GetInstance()

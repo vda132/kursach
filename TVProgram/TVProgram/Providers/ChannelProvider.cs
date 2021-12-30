@@ -14,8 +14,6 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"INSERT INTO Channel(NameChannel) VALUES ('{entity.NameChannel}')";
                 var insert = new SqlCommand(query, connection);
                 insert.ExecuteNonQuery();
@@ -26,8 +24,6 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"DELETE FROM Channel WHERE IDChannel = {pk}";
                 var delete = new SqlCommand(query, connection);
                 delete.ExecuteNonQuery();
@@ -38,8 +34,6 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"SELECT IDChannel, NameChannel FROM Channel WHERE IDChannel = {pk}";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
@@ -47,12 +41,7 @@ namespace TVProgram.Providers
                 if (result.HasRows)
                 {
                     result.Read();
-
-                    return new TVChannel
-                    {
-                        IDChannel = (int)result["IDChannel"],
-                        NameChannel = (string)result["NameChannel"]
-                    };
+                    return GetChannel(result, connection);
                 }
                 throw new ArgumentException("Channel has not been found");
             }
@@ -62,8 +51,6 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"SELECT IDChannel, NameChannel FROM Channel";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
@@ -73,12 +60,7 @@ namespace TVProgram.Providers
                 {
                     while(result.Read())
                     {
-                        channels.Add(new TVChannel
-                        {
-                            IDChannel = (int)result["IDChannel"],
-                            NameChannel = (string)result["NameChannel"],
-                            Programs = GetPrograms((int)result["IDChannel"], connection)
-                        });
+                        channels.Add(GetChannel(result, connection));
                     }
                 }
                 return channels;
@@ -89,12 +71,20 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"UPDATE Channel SET NameChannel = '{entity.NameChannel}' WHERE IDChannel = {pk}";
                 var update = new SqlCommand(query, connection);
                 update.ExecuteNonQuery();
             }
+        }
+
+        private TVChannel GetChannel(SqlDataReader reader, SqlConnection connection)
+        {
+            return new TVChannel
+            {
+                IDChannel = (int)reader["IDChannel"],
+                NameChannel = (string)reader["NameChannel"],
+                Programs = GetPrograms((int)reader["IDChannel"], connection)
+            };
         }
 
         public IReadOnlyCollection<Models.TVProgram> GetPrograms(int idChannel, SqlConnection connection)

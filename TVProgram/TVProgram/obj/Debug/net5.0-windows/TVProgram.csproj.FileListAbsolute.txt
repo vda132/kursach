@@ -26,7 +26,6 @@ C:\Users\vladimirsh\RiderProjects\kursach\TVProgram\TVProgram\bin\Debug\net5.0-w
 C:\Users\vladimirsh\RiderProjects\kursach\TVProgram\TVProgram\bin\Debug\net5.0-windows\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\vladimirsh\RiderProjects\kursach\TVProgram\TVProgram\bin\Debug\net5.0-windows\runtimes\win\lib\netstandard2.0\System.Runtime.Caching.dll
 C:\Users\vladimirsh\RiderProjects\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.csproj.AssemblyReference.cache
-C:\Users\vladimirsh\RiderProjects\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.Form1.resources
 C:\Users\vladimirsh\RiderProjects\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.csproj.GenerateResource.cache
 C:\Users\vladimirsh\RiderProjects\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\vladimirsh\RiderProjects\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.AssemblyInfoInputs.cache
@@ -37,3 +36,5 @@ C:\Users\vladimirsh\RiderProjects\kursach\TVProgram\TVProgram\obj\Debug\net5.0-w
 C:\Users\vladimirsh\RiderProjects\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\ref\TVProgram.dll
 C:\Users\vladimirsh\RiderProjects\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.pdb
 C:\Users\vladimirsh\RiderProjects\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.genruntimeconfig.cache
+C:\Users\vladimirsh\RiderProjects\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.Authorization.resources
+C:\Users\vladimirsh\RiderProjects\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.Forms.Registration.resources

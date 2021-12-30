@@ -14,8 +14,6 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"INSERT INTO Genre(NameGenre) VALUES ('{entity.NameGenre}')";
                 var insert = new SqlCommand(query, connection);
                 insert.ExecuteNonQuery();
@@ -26,8 +24,6 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"DELETE FROM Genre WHERE IDGenre = {pk}";
                 var delete = new SqlCommand(query, connection);
                 delete.ExecuteNonQuery();
@@ -38,8 +34,6 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"SELECT IDGenre, NameGenre FROM Genre WHERE IDGenre = {pk}";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
@@ -47,12 +41,7 @@ namespace TVProgram.Providers
                 if (result.HasRows)
                 {
                     result.Read();
-
-                    return new TVGenre
-                    {
-                        IDGenre = (int)result["IDGenre"],
-                        NameGenre = (string)result["NameGenre"]
-                    };
+                    return GetGenre(result, connection);
                 }
                 throw new ArgumentException("Genre has not been found");
             }
@@ -62,8 +51,6 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"SELECT IDGenre, NameGenre FROM Genre";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
@@ -73,12 +60,7 @@ namespace TVProgram.Providers
                 {
                     while (result.Read())
                     {
-                        genres.Add(new TVGenre
-                        {
-                            IDGenre = (int)result["IDGenre"],
-                            NameGenre = (string)result["NameGenre"],
-                            Shows = GetShows((int)result["IDGenre"], connection)
-                        });
+                        genres.Add(GetGenre(result, connection));
                     }
                 }
                 return genres;
@@ -89,12 +71,20 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"UPDATE Genre SET NameGenre = '{entity.NameGenre}' WHERE IDGenre = {pk}";
                 var update = new SqlCommand(query, connection);
                 update.ExecuteNonQuery();
             }
+        }
+
+        private TVGenre GetGenre(SqlDataReader reader, SqlConnection connection)
+        {
+            return new TVGenre
+            {
+                IDGenre = (int)reader["IDGenre"],
+                NameGenre = (string)reader["NameGenre"],
+                Shows = GetShows((int)reader["IDGenre"], connection)
+            };
         }
 
         private IReadOnlyCollection<TVShow> GetShows(int idGenre, SqlConnection connection)

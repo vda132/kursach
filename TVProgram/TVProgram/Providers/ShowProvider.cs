@@ -14,8 +14,6 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"INSERT INTO Show(NameShow) VALUES ('{entity.NameShow}')";
                 var insert = new SqlCommand(query, connection);
                 insert.ExecuteNonQuery();
@@ -26,8 +24,6 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"DELETE FROM Show WHERE IDShow = {pk}";
                 var delete = new SqlCommand(query, connection);
                 delete.ExecuteNonQuery();
@@ -38,8 +34,6 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"SELECT IDShow, NameShow FROM Show WHERE IDShow = {pk}";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
@@ -48,11 +42,7 @@ namespace TVProgram.Providers
                 {
                     result.Read();
 
-                    return new TVShow
-                    {
-                        IDShow = (int)result["IDShow"],
-                        NameShow = (string)result["NameShow"]
-                    };
+                    return GetShow(result, connection);
                 }
                 throw new ArgumentException("Show has not been found");
             }
@@ -62,8 +52,6 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"SELECT IDShow, NameShow FROM Show";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
@@ -73,13 +61,7 @@ namespace TVProgram.Providers
                 {
                     while (result.Read())
                     {
-                        shows.Add(new TVShow
-                        {
-                            IDShow = (int)result["IDShow"],
-                            NameShow = (string)result["NameShow"],
-                            Genres = GetGenres((int)result["IDShow"], connection),
-                            Programs = GetPrograms((int)result["IDShow"], connection)
-                        });
+                        shows.Add(GetShow(result, connection));
                     }
                 }
                 return shows;
@@ -90,12 +72,21 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                connection.Open();
-
                 var query = $"UPDATE Show SET NameShow = '{entity.NameShow}' WHERE IDShow = {pk}";
                 var update = new SqlCommand(query, connection);
                 update.ExecuteNonQuery();
             }
+        }
+
+        private TVShow GetShow(SqlDataReader reader, SqlConnection connection)
+        {
+            return new TVShow
+            {
+                IDShow = (int)reader["IDShow"],
+                NameShow = (string)reader["NameShow"],
+                Genres = GetGenres((int)reader["IDShow"], connection),
+                Programs = GetPrograms((int)reader["IDShow"], connection)
+            };
         }
 
         public IReadOnlyCollection<TVGenre> GetGenres(int idShow, SqlConnection connection)
