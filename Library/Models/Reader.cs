@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Library.Models
 {
-    class Reader:IModel
+    public class Reader:IModel
     {
         public int ReaderNo { get; set; }
         public string ReaderName { get; set; }

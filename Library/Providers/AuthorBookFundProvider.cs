@@ -97,7 +97,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"UPDATE Author SET BookID={entity.BookID}, LibraryBookNO={entity.LibraryBookNO}, AuthorID={entity.AuthorID} WHERE BookID = {pk.BookID} AND LibraryBookNO={pk.LibraryBookNO} AND AuthorID={pk.AuthorID}";
+                var query = $"UPDATE AuthorBookFund SET BookID={entity.BookID}, LibraryBookNO={entity.LibraryBookNO}, AuthorID={entity.AuthorID} WHERE BookID = {pk.BookID} AND LibraryBookNO={pk.LibraryBookNO} AND AuthorID={pk.AuthorID}";
                 var update = new SqlCommand(query, connection);
                 update.ExecuteNonQuery();
             }
@@ -131,7 +131,7 @@ namespace Library.Providers
             BookFund bookFund = null;
             using (var connection = GetConnection())
             {
-                var query = $"SELECT BookID, LibraryBookNO, BookName, DateOfPublication, Capacity, Price, BookStatus FROM Author WHERE BookID = {pk.BookID} AND LibraryBookNO={pk.LibraryBookNO}";
+                var query = $"SELECT BookID, LibraryBookNO, BookName, DateOfPublication, Capacity, BookStatus FROM BookFund WHERE BookID = {pk.BookID} AND LibraryBookNO={pk.LibraryBookNO}";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
                 if (result.HasRows)
@@ -144,7 +144,6 @@ namespace Library.Providers
                         BookName=(string)result["BookName"],
                         DateOfPublication=(DateTime)result["DateOfPublication"],
                         Capacity=(int)result["Capacity"],
-                        Price=(decimal)result["Price"],
                         BookStatus = (bool)result["BookStatus"]
                     };
                 }

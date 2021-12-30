@@ -58,7 +58,7 @@ namespace Library.Providers
                     throw new ArgumentException("Author has not been found.");
                 }
             }
-            extradition.Reader = GetReader(pk);
+            extradition.Reader = GetReader(extradition);
             extradition.BookFund = GetBookFund(pk);
             return extradition;
         }
@@ -68,7 +68,7 @@ namespace Library.Providers
             var extraditions = new List<Extradition>();
             using (var connection = GetConnection())
             {
-                var query = $"SELECT BookID, LibraryBookNO, ReaderNo, DateOfExtradition, DateOfReturn, Information FROM AuthorBookFund";
+                var query = $"SELECT BookID, LibraryBookNO, ReaderNo, DateOfExtradition, DateOfReturn, Information FROM Extradition";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
                 if (result.HasRows)
@@ -93,7 +93,7 @@ namespace Library.Providers
                 pk.BookID = extradition.BookID;
                 pk.LibraryBookNO = extradition.LibraryBookNO;
                 pk.DateOfExtradition = extradition.DateOfExtradition;
-                extradition.Reader = GetReader(pk);
+                extradition.Reader = GetReader(extradition);
                 extradition.BookFund = GetBookFund(pk);
             }
             return extraditions;
@@ -108,12 +108,12 @@ namespace Library.Providers
                 update.ExecuteNonQuery();
             }
         }
-        public Reader GetReader(ExtraditionPK pk)
+        public Reader GetReader(Extradition pk)
         {
             Reader reader = null;
             using (var connection = GetConnection())
             {
-                var query = $"SELECT ReaderNo, ReaderName, Adress, Phone FROM Reader WHERE ReaderNo = {pk}";
+                var query = $"SELECT ReaderNo, ReaderName, Adress, Phone FROM Reader WHERE ReaderNo = {pk.ReaderNo}";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
                 if (result.HasRows)
@@ -139,7 +139,7 @@ namespace Library.Providers
             var bookFund = new BookFund();
             using (var connection = GetConnection())
             {
-                var query = $"SELECT BookID, LibraryBookNO, BookName, DateOfPublication, Capacity, Price FROM BookFund WHERE BookID = {pk.BookID} AND LibraryBookNO = {pk.LibraryBookNO}";
+                var query = $"SELECT BookID, LibraryBookNO, BookName, DateOfPublication, Capacity, BookStatus FROM BookFund WHERE BookID = {pk.BookID} AND LibraryBookNO = {pk.LibraryBookNO}";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
                 if (result.HasRows)
@@ -152,7 +152,7 @@ namespace Library.Providers
                         BookName = (string)result["BookName"],
                         DateOfPublication = (DateTime)result["DateOfPublication"],
                         Capacity = (int)result["Capacity"],
-                        Price = (decimal)result["Price"]
+                        BookStatus = (bool)result["BookStatus"]
                     };
                 }
                 else

@@ -34,7 +34,6 @@ namespace Library
             this.loginTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.passwordTextBox = new System.Windows.Forms.TextBox();
-            this.RegistrationButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // EnterButton
@@ -81,22 +80,11 @@ namespace Library
             this.passwordTextBox.Size = new System.Drawing.Size(159, 29);
             this.passwordTextBox.TabIndex = 4;
             // 
-            // RegistrationButton
-            // 
-            this.RegistrationButton.Location = new System.Drawing.Point(116, 283);
-            this.RegistrationButton.Name = "RegistrationButton";
-            this.RegistrationButton.Size = new System.Drawing.Size(159, 33);
-            this.RegistrationButton.TabIndex = 5;
-            this.RegistrationButton.Text = "Регистрация";
-            this.RegistrationButton.UseVisualStyleBackColor = true;
-            this.RegistrationButton.Click += new System.EventHandler(this.RegistrationButton_Click);
-            // 
             // Authorization
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 373);
-            this.Controls.Add(this.RegistrationButton);
             this.Controls.Add(this.passwordTextBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.loginTextBox);
@@ -117,7 +105,6 @@ namespace Library
         private System.Windows.Forms.TextBox loginTextBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox passwordTextBox;
-        private System.Windows.Forms.Button RegistrationButton;
     }
 }
 

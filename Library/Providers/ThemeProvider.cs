@@ -95,7 +95,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"SELECT BookID, LibraryBookNo, ThemeID from ThemeBookFund WHERE ReaderNo={pk}";
+                var query = $"SELECT BookID, LibraryBookNo, ThemeID from ThemeBookFund WHERE ThemeID={pk}";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Library.Models
 {
-    class Extradition:IModel
+    public class Extradition:IModel
     {
         public int BookID { get; set; }
         public int LibraryBookNO { get; set; }

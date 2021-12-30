@@ -15,7 +15,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"INSERT INTO BookFund(BookID, BookName, DateOfPublication, Capacity, Price, BookStatus) VALUES({entity.BookID},'{entity.BookName}','{entity.DateOfPublication}','{entity.Capacity}','{entity.Capacity}',{entity.BookStatus})";
+                var query = $"INSERT INTO BookFund(BookID, BookName, DateOfPublication, Capacity, BookStatus) VALUES({entity.BookID},'{entity.BookName}','{entity.DateOfPublication}','{entity.Capacity}','{entity.BookStatus}')";
                 var insert = new SqlCommand(query, connection);
                 insert.ExecuteNonQuery();
             }
@@ -25,7 +25,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"DELETE FROM BookFund WHERE BookID = {pk.BookID} AND LibraryBookNO={pk.LibraryBookNO}";
+                var query = $"DELETE FROM BookFund WHERE BookID = {pk.BookID}";
                 var delete = new SqlCommand(query, connection);
                 delete.ExecuteNonQuery();
             }
@@ -36,7 +36,7 @@ namespace Library.Providers
             var bookFund = new BookFund();
             using (var connection = GetConnection())
             {
-                var query = $"SELECT BookID, LibraryBookNO, BookName, DateOfPublication, Capacity, Price, BookStatus FROM BookFund WHERE BookID = {pk.BookID} AND LibraryBookNO = {pk.LibraryBookNO}";
+                var query = $"SELECT BookID, LibraryBookNO, BookName, DateOfPublication, Capacity, BookStatus FROM BookFund WHERE BookID = {pk.BookID} AND LibraryBookNO = {pk.LibraryBookNO}";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
                 if (result.HasRows)
@@ -49,7 +49,6 @@ namespace Library.Providers
                         BookName = (string)result["BookName"],
                         DateOfPublication = (DateTime)result["DateOfPublication"],
                         Capacity = (int)result["Capacity"],
-                        Price = (decimal)result["Price"],
                         BookStatus =(bool)result["BookStatus"]
                     };
                 }
@@ -69,7 +68,7 @@ namespace Library.Providers
             var bookFunds = new List<BookFund>();
             using (var connection = GetConnection())
             {
-                var query = $"SELECT BookID, LibraryBookNO, BookName, DateOfPublication, Capacity, Price, BookStatus FROM BookFund";
+                var query = $"SELECT BookID, LibraryBookNO, BookName, DateOfPublication, Capacity, BookStatus FROM BookFund";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
                 if (result.HasRows)
@@ -83,7 +82,6 @@ namespace Library.Providers
                             BookName = (string)result["BookName"],
                             DateOfPublication = (DateTime)result["DateOfPublication"],
                             Capacity = (int)result["Capacity"],
-                            Price = (decimal)result["Price"],
                             BookStatus = (bool)result["BookStatus"]
                         });
                     }
@@ -105,7 +103,7 @@ namespace Library.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"UPDATE BookFund SET BookName='{entity.BookName}', DateOfPublication='{entity.DateOfPublication}', Capacity={entity.Capacity}, Price={entity.Price}, BookStatus={entity.BookStatus} WHERE BookID={pk.BookID} AND LibraryBookNo={pk.LibraryBookNO}";
+                var query = $"UPDATE BookFund SET BookName='{entity.BookName}', DateOfPublication='{entity.DateOfPublication}', Capacity={entity.Capacity}, BookStatus='{entity.BookStatus}' WHERE BookID={pk.BookID} AND LibraryBookNo={pk.LibraryBookNO}";
                 var update = new SqlCommand(query, connection);
                 update.ExecuteNonQuery();
             }
@@ -179,7 +177,7 @@ namespace Library.Providers
                         {
                             BookID = (int)result["BookID"],
                             LibraryBookNO = (int)result["LibraryBookNo"],
-                            ThemeID = (int)result["AuthorID"]
+                            ThemeID = (int)result["ThemeID"]
                         });
                     }
                 }

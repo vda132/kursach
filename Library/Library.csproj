@@ -54,11 +54,23 @@
       <DependentUpon>Authorization.cs</DependentUpon>
     </Compile>
     <Compile Include="Cache\UserCache.cs" />
-    <Compile Include="Forms\Registration.cs">
+    <Compile Include="Forms\AddingInfoBookForms\AddAuthor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Registration.Designer.cs">
-      <DependentUpon>Registration.cs</DependentUpon>
+    <Compile Include="Forms\AddingInfoBookForms\AddAuthor.Designer.cs">
+      <DependentUpon>AddAuthor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AddingInfoBookForms\AddTheme.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AddingInfoBookForms\AddTheme.Designer.cs">
+      <DependentUpon>AddTheme.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\BookInfoForm\BookInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BookInfoForm\BookInfo.Designer.cs">
+      <DependentUpon>BookInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\WorkSpace.cs">
       <SubType>Form</SubType>
@@ -91,11 +103,18 @@
     <Compile Include="Providers\ThemeBookFundProvider.cs" />
     <Compile Include="Providers\ThemeProvider.cs" />
     <Compile Include="Providers\UserProvider.cs" />
+    <Compile Include="Statistic\Statistic.cs" />
     <EmbeddedResource Include="Authorization.resx">
       <DependentUpon>Authorization.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Registration.resx">
-      <DependentUpon>Registration.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\AddingInfoBookForms\AddAuthor.resx">
+      <DependentUpon>AddAuthor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AddingInfoBookForms\AddTheme.resx">
+      <DependentUpon>AddTheme.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BookInfoForm\BookInfo.resx">
+      <DependentUpon>BookInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\WorkSpace.resx">
       <DependentUpon>WorkSpace.cs</DependentUpon>

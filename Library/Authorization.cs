@@ -48,11 +48,6 @@ namespace Library
             new WorkSpace(this, user).Show();
         }
 
-        private void RegistrationButton_Click(object sender, EventArgs e)
-        {
-            new Registration(this).Show();
-            this.Hide();
-        }
         private void ClearFields()
         {
             loginTextBox.Text = null;
