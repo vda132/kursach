@@ -29,9 +29,9 @@ namespace Library.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.loginLabel = new System.Windows.Forms.Label();
             this.passwordLabel = new System.Windows.Forms.Label();
             this.loginTextBox = new System.Windows.Forms.TextBox();
@@ -148,6 +148,7 @@ namespace Library.Forms
             this.booksCatalogueDataGridView = new System.Windows.Forms.DataGridView();
             this.themeCatologButton = new System.Windows.Forms.Button();
             this.alphaviteButton = new System.Windows.Forms.Button();
+            this.bookCatalogueInfoButton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -1201,16 +1202,16 @@ namespace Library.Forms
             // 
             // chart1
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.chart1.Legends.Add(legend3);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
             this.chart1.Location = new System.Drawing.Point(35, 57);
             this.chart1.Name = "chart1";
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.chart1.Series.Add(series3);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(650, 329);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
@@ -1335,6 +1336,7 @@ namespace Library.Forms
             // 
             // tabPage12
             // 
+            this.tabPage12.Controls.Add(this.bookCatalogueInfoButton);
             this.tabPage12.Controls.Add(this.booksCatalogueDataGridView);
             this.tabPage12.Controls.Add(this.themeCatologButton);
             this.tabPage12.Controls.Add(this.alphaviteButton);
@@ -1378,6 +1380,16 @@ namespace Library.Forms
             this.alphaviteButton.Text = "Алфавитный каталог";
             this.alphaviteButton.UseVisualStyleBackColor = true;
             this.alphaviteButton.Click += new System.EventHandler(this.alphaviteButton_Click);
+            // 
+            // bookCatalogueInfoButton
+            // 
+            this.bookCatalogueInfoButton.Location = new System.Drawing.Point(570, 374);
+            this.bookCatalogueInfoButton.Name = "bookCatalogueInfoButton";
+            this.bookCatalogueInfoButton.Size = new System.Drawing.Size(250, 32);
+            this.bookCatalogueInfoButton.TabIndex = 30;
+            this.bookCatalogueInfoButton.Text = "Подробная информация о книге";
+            this.bookCatalogueInfoButton.UseVisualStyleBackColor = true;
+            this.bookCatalogueInfoButton.Click += new System.EventHandler(this.bookCatalogueInfoButton_Click);
             // 
             // WorkSpace
             // 
@@ -1547,5 +1559,6 @@ namespace Library.Forms
         private System.Windows.Forms.Button themeCatologButton;
         private System.Windows.Forms.Button alphaviteButton;
         private System.Windows.Forms.DataGridView booksCatalogueDataGridView;
+        private System.Windows.Forms.Button bookCatalogueInfoButton;
     }
 }

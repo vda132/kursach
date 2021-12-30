@@ -28,6 +28,7 @@ namespace Library.Forms
         List<Extradition> extraditions = new List<Extradition>();
         List<Extradition> readerHistory = new List<Extradition>();
         List<BookFund> booksCatalogue = new List<BookFund>();
+        List<BookFund> booksCatalogueForInfo = new List<BookFund>();
         Form previousForm;
         Users user;
         public WorkSpace(Form form, Users _user)
@@ -164,6 +165,7 @@ namespace Library.Forms
 
         private void ReaderProperties()
         {
+            tabControl3.Visible = true;
             readerLoginTextBox.Text = user.UserLogin;
             readerPassTextBox.Text = user.UserPassword;
             editReaderButton.Enabled = true;
@@ -255,7 +257,6 @@ namespace Library.Forms
                 var user = provider.UserProvider.GetAll().FirstOrDefault(A => A.UserLogin == "Reader" + reader.ReaderNo.ToString());
                 readerDataGridView.Rows.Add(reader.ReaderNo, reader.ReaderName, reader.Adress, reader.Phone, user.UserLogin, user.UserPassword);
             }
-
         }
 
         private void LoadReadersExtradition()
@@ -875,6 +876,7 @@ namespace Library.Forms
 
         private void alphaviteButton_Click(object sender, EventArgs e)
         {
+            booksCatalogueForInfo.Clear();
             booksCatalogueDataGridView.ColumnCount = 5;
             booksCatalogueDataGridView.Columns[4].Name = "Автор";
             booksCatalogueDataGridView.Rows.Clear();
@@ -895,11 +897,13 @@ namespace Library.Forms
             foreach (var book in tmp2)
             {
                 booksCatalogueDataGridView.Rows.Add(book.BookID, book.BookName, book.DateOfPublication.ToShortDateString(), book.Capacity, book.AuthorName);
+                booksCatalogueForInfo.Add(provider.BookFundProvider.GetAll().FirstOrDefault(A => A.BookID == book.BookID));
             }
         }
 
         private void themeCatologButton_Click(object sender, EventArgs e)
         {
+            booksCatalogueForInfo.Clear();
             booksCatalogueDataGridView.ColumnCount = 6;
             booksCatalogueDataGridView.Columns[4].Name = "Тематика";
             booksCatalogueDataGridView.Columns[5].Width = 75;
@@ -930,7 +934,20 @@ namespace Library.Forms
             foreach (var book in tmp4)
             {
                 booksCatalogueDataGridView.Rows.Add(book.BookID, book.BookName, book.DateOfPublication.ToShortDateString(), book.Capacity, book.ThemeName,book.BookName);
+                booksCatalogueForInfo.Add(provider.BookFundProvider.GetAll().FirstOrDefault(A => A.BookID == book.BookID));
             }
+
+        }
+
+        private void bookCatalogueInfoButton_Click(object sender, EventArgs e)
+        {
+            if (booksCatalogueForInfo.Count == 0 || booksCatalogueDataGridView.CurrentCell == null || booksCatalogueDataGridView.CurrentCell.RowIndex == booksCatalogueForInfo.Count)
+            {
+                MessageBox.Show("Выберите какуюто книгу", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            BookFund tmpBook = provider.BookFundProvider.GetAll().FirstOrDefault(A => A.BookID == booksCatalogueForInfo[booksCatalogueDataGridView.CurrentCell.RowIndex].BookID);
+            new BookInfo(tmpBook).Show();
         }
     }
 }
