@@ -5,6 +5,7 @@ namespace TVProgram.Models
 {
     static class DayOfWeek
     {
+        // Days as static string
         public static string Monday => "Понедельник";
         public static string Tuesday => "Вторник";
         public static string Wednesday => "Среда";

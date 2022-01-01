@@ -12,11 +12,13 @@ namespace TVProgram
 			InitializeComponent();
         }
 
+        // Sign in act
         private void signInButton_Click(object sender, EventArgs e)
         {
             var login = loginTextBox.Text;
             var password = passwordTextBox.Text;
 
+            // Validate on empty strings
             if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
             {
                 MessageBox.Show("Поля не должны быть пустыми", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -25,9 +27,11 @@ namespace TVProgram
 
             try
             {
-                var user = ProviderFactory.GetInstance().UserProvider.Get(login);
+                // Try to get user
+                var user = ProviderFactory.Instance.UserProvider.Get(login);
                 if (user.Password.Equals(password))
                 {
+                    // Set user on cache
                     Cache.Instance.CurrectUser = user;
                 }
             }
@@ -37,11 +41,15 @@ namespace TVProgram
                 return;
             }
 
-            MessageBox.Show("Вы вошли как : " + Cache.Instance.CurrectUser.Login);
+            // Show form with programs list
+            this.Hide();
+            new ProgramsShow().Show();
         }
 
+        // Move to registration form
         private void signUpButton_MouseClick(object sender, MouseEventArgs e)
         {
+            // Set empty to text boxes
             loginTextBox.Text = string.Empty;
             passwordTextBox.Text = string.Empty;
 

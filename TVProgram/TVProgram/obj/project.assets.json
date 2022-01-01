@@ -2320,11 +2320,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\vladimirsh\\RiderProjects\\kursach\\TVProgram\\TVProgram\\TVProgram.csproj",
+      "projectUniqueName": "C:\\Users\\vladimirsh\\Documents\\kursach\\TVProgram\\TVProgram\\TVProgram.csproj",
       "projectName": "TVProgram",
-      "projectPath": "C:\\Users\\vladimirsh\\RiderProjects\\kursach\\TVProgram\\TVProgram\\TVProgram.csproj",
+      "projectPath": "C:\\Users\\vladimirsh\\Documents\\kursach\\TVProgram\\TVProgram\\TVProgram.csproj",
       "packagesPath": "C:\\Users\\vladimirsh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\vladimirsh\\RiderProjects\\kursach\\TVProgram\\TVProgram\\obj\\",
+      "outputPath": "C:\\Users\\vladimirsh\\Documents\\kursach\\TVProgram\\TVProgram\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

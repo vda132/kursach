@@ -32,13 +32,13 @@ namespace TVProgram.Forms
                 return;
             }
 
-            if (ProviderFactory.GetInstance().UserProvider.Get(login) != null)
+            if (ProviderFactory.Instance.UserProvider.Get(login) != null)
             {
                 MessageBox.Show("Пользователь с такой учётной записью уже существует", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            ProviderFactory.GetInstance().UserProvider.Add(new Models.User { Login = login, Password = password, Status = null });
+            ProviderFactory.Instance.UserProvider.Add(new Models.User { Login = login, Password = password, Status = null });
             MessageBox.Show("Попробуй войти под новой учётной записью");
 
             GoBackToPreviousForm();

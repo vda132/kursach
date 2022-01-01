@@ -5,13 +5,10 @@ namespace TVProgram.Providers.Factories
 {
     class ProviderFactory
     {
+        // Use pattern Singleton
+        #region Singleton
         private static ProviderFactory instance = null;
-
-        public CrudProviderBase<Models.TVChannel, int> ChannelProvider { get; init; }
-        public CrudProviderBase<Models.TVGenre, int> GenreProvider { get; init; }
-        public CrudProviderBase<Models.TVShow, int> ShowProvider { get; init; }
-        public CrudProviderBase<Models.TVProgram, TVProgramPK> ProgramProvider { get; init; }
-        public UserProvider UserProvider { get; init; }
+        public static ProviderFactory Instance { get => instance == null ? (instance = new ProviderFactory()) : instance; }
         private ProviderFactory()
         {
             ChannelProvider = new ChannelProvider();
@@ -20,10 +17,13 @@ namespace TVProgram.Providers.Factories
             ProgramProvider = new ProgramProvider();
             UserProvider = new UserProvider();
         }
+        #endregion
 
-        public static ProviderFactory GetInstance()
-        {
-            return instance == null ? (instance = new ProviderFactory()) : instance;
-        }
+        // Providers
+        public CrudProviderBase<Models.TVChannel, int> ChannelProvider { get; init; }
+        public CrudProviderBase<Models.TVGenre, int> GenreProvider { get; init; }
+        public CrudProviderBase<Models.TVShow, int> ShowProvider { get; init; }
+        public CrudProviderBase<Models.TVProgram, TVProgramPK> ProgramProvider { get; init; }
+        public UserProvider UserProvider { get; init; }
     }
 }

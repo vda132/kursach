@@ -13,6 +13,22 @@ namespace TVProgram
         }
         #endregion
 
-        public User CurrectUser { get; set; }
+        private User currentUser;
+        public User CurrectUser
+        {
+            get => currentUser;
+            set
+            {
+                if (value == null)
+                    CurrentUserStatus = UserStatus.Unknown;
+                if (value.Status == "admin")
+                    CurrentUserStatus = UserStatus.Admin;
+                else
+                    CurrentUserStatus = UserStatus.User;
+
+                currentUser = value;
+            }
+        }
+        public UserStatus CurrentUserStatus { get; private set; }
     }
 }
