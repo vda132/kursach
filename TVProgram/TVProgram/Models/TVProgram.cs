@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace TVProgram.Models
+﻿namespace TVProgram.Models
 {
-    class TVProgram : IModel
+    public class TVProgram : IModel
     {
         // properties
         public int IDChannel { get; set; }

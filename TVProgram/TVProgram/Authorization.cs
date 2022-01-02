@@ -34,6 +34,10 @@ namespace TVProgram
                     // Set user on cache
                     Cache.Instance.CurrectUser = user;
                 }
+                else
+                {
+                    MessageBox.Show("Проверьте правильность пароля", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             catch (ArgumentException ex)
             {
@@ -41,9 +45,25 @@ namespace TVProgram
                 return;
             }
 
-            // Show form with programs list
-            this.Hide();
-            new ProgramsShow().Show();
+            var currentUser = Cache.Instance.CurrectUser;
+            if (string.IsNullOrEmpty(currentUser.Status))
+            {
+                // Show form with programs list
+                this.Hide();
+                new ProgramsShow().Show();
+            }
+            if (currentUser.Status.Equals("admin"))
+            {
+                // Show form with admin menu
+                this.Hide();
+                new AdminMenu().Show();
+            }
+            else
+            {
+                // Show form with channel admin menu
+                this.Hide();
+                new ChannelAdminMenu().Show();
+            }
         }
 
         // Move to registration form

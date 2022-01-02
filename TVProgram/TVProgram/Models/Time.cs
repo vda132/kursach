@@ -2,28 +2,28 @@
 
 namespace TVProgram.Models
 {
-    class Time
+    public class Time
     {
-        private int _hours;
-        private int _minutes;
+        private int hours;
+        private int minutes;
 
         public int Hours
         {
-            get => _hours;
+            get => hours;
             set
             {
                 ValidateHours(value);
-                _hours = value;
+                hours = value;
             }
         }
 
         public int Minutes
         {
-            get => _minutes;
+            get => minutes;
             set
             {
                 ValidateMinutes(value);
-                _minutes = value;
+                minutes = value;
             }
         }
 
@@ -35,8 +35,8 @@ namespace TVProgram.Models
         public Time(int hours = 0, int minutes = 0)
         {
             ValidateTime(hours, minutes);
-            _hours = hours;
-            _minutes = minutes;
+            this.hours = hours;
+            this.minutes = minutes;
         }
 
         private void ValidateTime(int hours, int minutes)
@@ -66,12 +66,66 @@ namespace TVProgram.Models
 
         public override string ToString()
         {
-            return NumberToString(_hours) + ":" + NumberToString(_minutes);
+            return NumberToString(hours) + ":" + NumberToString(minutes);
         }
 
         private string NumberToString(int value)
         {
             return value < 10 ? "0" + value.ToString() : value.ToString();
+        }
+
+        public bool GreaterTo(Time time)
+        {
+            return CompareTo(time) is 1;
+        }
+
+        public bool GreaterOrEqualTo(Time time)
+        {
+            return CompareTo(time) is 1 or 0;
+        }
+
+        public bool EqualTo(Time time)
+        {
+            return CompareTo(time) is 0;
+        }
+
+        public bool LessOrEqualTo(Time time)
+        {
+            return CompareTo(time) is -1 or 0;
+        }
+
+        public bool LessTo(Time time)
+        {
+            return CompareTo(time) is -1;
+        }
+
+        private int CompareTo(Time time)
+        {
+            if (hours > time.hours)
+                return 1;
+
+            if (hours < time.hours)
+                return -1;
+
+            if (minutes > time.minutes)
+                return 1;
+
+            if (minutes < time.minutes)
+                return -1;
+
+            return 0;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Time time &&
+                   hours == time.hours &&
+                   minutes == time.minutes;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(hours, minutes);
         }
     }
 }

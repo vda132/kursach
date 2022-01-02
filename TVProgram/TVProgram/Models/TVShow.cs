@@ -2,7 +2,7 @@
 
 namespace TVProgram.Models
 {
-    class TVShow : IModel
+    public class TVShow : IModel
     {
         public int IDShow { get; set; }
         public string NameShow { get; set; }
