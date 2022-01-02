@@ -13,6 +13,11 @@ namespace TVProgram.Models
         public IReadOnlyCollection<TVGenre> Genres { get; set; } = new List<TVGenre>();
 
         /// <summary>
+        /// It is realization of many to many relationship
+        /// </summary>
+        public IReadOnlyCollection<TVChannel> Channels { get; set; } = new List<TVChannel>();
+
+        /// <summary>
         /// It is realization of one to many relationship
         /// </summary>
         public IReadOnlyCollection<TVProgram> Programs { get; set; } = new List<TVProgram>();
