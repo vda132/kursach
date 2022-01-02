@@ -34,14 +34,14 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"SELECT IDChannel, IDShow, DayWeekBegin, DayWeekEnd, TimeBegin, TimeEnd FROM Program WHERE IDChannel = {pk.IDChannel} and IDShow = {pk.IDShow} and DayWeekBegin = '{pk.StartDayOfWeek}' and  TimeBegin = '{pk.StartTime}'";
+                var query = $"SELECT Channel.IDChannel, NameChannel, Show.IDShow, NameShow, DayWeekBegin, DayWeekEnd, TimeBegin, TimeEnd FROM Program inner join Channel on Program.IDChannel = Channel.IDChannel inner join Show Program.IDShow = Show.IDShow WHERE IDChannel = {pk.IDChannel} and IDShow = {pk.IDShow} and DayWeekBegin = '{pk.StartDayOfWeek}' and  TimeBegin = '{pk.StartTime}'";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
 
                 if (result.HasRows)
                 {
                     result.Read();
-                    return GetProgram(result, connection);                    
+                    return GetProgram(result);                    
                 }
                 throw new ArgumentException("Program has not been found");
             }
@@ -51,7 +51,7 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"SELECT IDChannel, IDShow, DayWeekBegin, DayWeekEnd, TimeBegin, TimeEnd FROM Program";
+                var query = $"SELECT Channel.IDChannel, NameChannel, Show.IDShow, NameShow, DayWeekBegin, DayWeekEnd, TimeBegin, TimeEnd FROM Program inner join Channel on Program.IDChannel = Channel.IDChannel inner join Show on Program.IDShow = Show.IDShow";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
 
@@ -60,7 +60,7 @@ namespace TVProgram.Providers
                 {
                     while (result.Read())
                     {
-                        programs.Add(GetProgram(result, connection));
+                        programs.Add(GetProgram(result));
                     }
                 }
                 return programs;
@@ -77,57 +77,20 @@ namespace TVProgram.Providers
             }
         }
 
-        private Models.TVProgram GetProgram(SqlDataReader reader, SqlConnection connection)
+        // Reduce amount of rows
+        private Models.TVProgram GetProgram(SqlDataReader reader)
         {
             return new Models.TVProgram
             {
                 IDChannel = (int)reader["IDChannel"],
-                Channel = GetChannel((int)reader["IDChannel"], connection),
+                Channel = new TVChannel { IDChannel = (int)reader["IDChannel"], NameChannel = (string)reader["NameChannel"] },
                 IDShow = (int)reader["IDShow"],
-                Show = GetShow((int)reader["IDShow"], connection),
+                Show = new TVShow { IDShow = (int)reader["IDShow"], NameShow = (string)reader["NameShow"] },
                 StartWeekDay = (string)reader["DayWeekBegin"],
                 EndWeekDay = (string)reader["DayWeekEnd"],
                 StartTime = Time.FromString(reader["TimeBegin"].ToString()),
-                EndTime = Time.FromString(reader["EndBegin"].ToString())
+                EndTime = Time.FromString(reader["TimeEnd"].ToString())
             };
-        }
-
-        private TVChannel GetChannel(int idChannel, SqlConnection connection)
-        {
-            var query = $"SELECT IDChannel, NameChannel FROM Channel WHERE IDChannel = {idChannel}";
-            var select = new SqlCommand(query, connection);
-            var result = select.ExecuteReader();
-
-            if (result.HasRows)
-            {
-                result.Read();
-
-                return new TVChannel
-                {
-                    IDChannel = (int)result["IDChannel"],
-                    NameChannel = (string)result["NameChannel"]
-                };
-            }
-            throw new ArgumentException("Channel has not been found");
-        }
-
-        private TVShow GetShow(int idShow, SqlConnection connection)
-        {
-            var query = $"SELECT IDShow, NameShow FROM Show WHERE IDShow = {idShow}";
-            var select = new SqlCommand(query, connection);
-            var result = select.ExecuteReader();
-
-            if (result.HasRows)
-            {
-                result.Read();
-
-                return new TVShow
-                {
-                    IDShow = (int)result["IDShow"],
-                    NameShow = (string)result["NameShow"]
-                };
-            }
-            throw new ArgumentException("Show has not been found");
         }
     }
 }
