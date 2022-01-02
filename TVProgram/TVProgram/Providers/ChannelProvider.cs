@@ -51,7 +51,7 @@ namespace TVProgram.Providers
                 }
             }
 
-            SetPrograms(pk, channel);
+            SetLists(pk, channel);
 
             return channel;
         }
@@ -77,7 +77,7 @@ namespace TVProgram.Providers
             }
 
             foreach (var channel in channels)
-                SetPrograms(channel.IDChannel, channel);
+                SetLists(channel.IDChannel, channel);
 
             return channels;
         }
@@ -101,7 +101,37 @@ namespace TVProgram.Providers
             };
         }
 
-        public void SetPrograms(int idChannel, TVChannel channel)
+        private void SetLists(int idChannel, TVChannel channel)
+        {
+            SetShows(idChannel, channel);
+            SetPrograms(idChannel, channel);
+        }
+
+        private void SetShows(int idChannel, TVChannel channel)
+        {
+            using (var connection = GetConnection())
+            {
+                var query = $"SELECT Show.IDShow, NameShow FROM Show INNER JOIN ShowChannel ON Show.IDShow = ShowChannel.IDShow WHERE IDChannel = {idChannel}";
+                var select = new SqlCommand(query, connection);
+                var result = select.ExecuteReader();
+
+                var shows = new List<TVShow>();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        shows.Add(new TVShow
+                        {
+                            IDShow = (int)result["IDShow"],
+                            NameShow = (string)result["NameShow"]
+                        });
+                    }
+                }
+                channel.Shows = shows;
+            }
+        }
+
+        private void SetPrograms(int idChannel, TVChannel channel)
         {
             using (var connection = GetConnection())
             {

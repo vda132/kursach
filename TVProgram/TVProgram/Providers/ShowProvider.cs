@@ -52,8 +52,7 @@ namespace TVProgram.Providers
                 }
             }
 
-            if (show is not null)
-                SetLists(show.IDShow, show);
+            SetLists(show.IDShow, show);
 
             return show;
         }
@@ -105,6 +104,7 @@ namespace TVProgram.Providers
         private void SetLists(int showId, TVShow show)
         {
             SetGenres(showId, show);
+            SetChannels(showId, show);
             SetPrograms(showId, show);
         }
 
@@ -129,6 +129,30 @@ namespace TVProgram.Providers
                     }
                 }
                 show.Genres = genres;
+            }
+        }
+
+        private void SetChannels(int idShow, TVShow show)
+        {
+            using (var connection = GetConnection())
+            {
+                var query = $"SELECT Channel.IDChannel, NameChannel FROM Channel INNER JOIN ShowChannel ON Channel.IDChannel = ShowChannel.IDChannel WHERE IDShow = {idShow}";
+                var select = new SqlCommand(query, connection);
+                var result = select.ExecuteReader();
+
+                var channels = new List<TVChannel>();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        channels.Add(new TVChannel
+                        {
+                            IDChannel = (int)result["IDChannel"],
+                            NameChannel = (string)result["NameChannel"]
+                        });
+                    }
+                }
+                show.Channels = channels;
             }
         }
 
