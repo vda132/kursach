@@ -38,8 +38,6 @@ namespace TVProgram.Forms
             UpdateDataGrid();
             ShowsDataGrid.Columns["IDShow"].Visible = false;
             ShowsDataGrid.Columns["IDChannel"].Visible = false;
-            ShowsDataGrid.Columns["DayOfWeek"].Visible = false;
-            ShowsDataGrid.Columns["Time"].Visible = false;
 
             // Get genres from db
             genres = ProviderFactory.Instance.GenreProvider.GetAll().ToList();

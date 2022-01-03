@@ -3,7 +3,7 @@ using TVProgram.Models;
 
 namespace TVProgram.DisplayModels
 {
-    class TVProgram : IDateTimeModel
+    class TVProgram
     {
         // properties
         public int IDChannel { get; set; }
@@ -38,10 +38,6 @@ namespace TVProgram.DisplayModels
                 NameShow + newLine +
                 StartWeekDay + " " + StartTime + " - " + EndWeekDay + " " + EndTime;
         }
-
-        // IDateTimeModel implementation
-        public string DayOfWeek { get => StartWeekDay; }
-        public Time Time { get => StartTime; }
 
         public override bool Equals(object obj)
         {
