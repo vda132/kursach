@@ -79,3 +79,9 @@ C:\Users\vladimirsh\Documents\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windo
 C:\Users\vladimirsh\Documents\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.pdb
 C:\Users\vladimirsh\Documents\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.genruntimeconfig.cache
 C:\Users\vladimirsh\Documents\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.Forms.ProgramsShow.resources
+C:\Users\vladimirsh\Documents\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.Forms.AddEditChannel.resources
+C:\Users\vladimirsh\Documents\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.Forms.AddEditGenre.resources
+C:\Users\vladimirsh\Documents\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.Forms.AdminMenu.resources
+C:\Users\vladimirsh\Documents\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.Forms.ChannelAdminMenu.resources
+C:\Users\vladimirsh\Documents\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.Forms.AddEditShow.resources
+C:\Users\vladimirsh\Documents\kursach\TVProgram\TVProgram\obj\Debug\net5.0-windows\TVProgram.Forms.AddEditProgram.resources

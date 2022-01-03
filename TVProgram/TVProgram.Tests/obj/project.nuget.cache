@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "dgSpecHash": "xEpqzKT6CGioCPeIzunb41SPaC3Ukd9A26ShfdKdY880D0ltg8cxcmQqiNwyFnFcCdcjv5EYHmLddV5VCW8m+w==",
+  "success": false,
+  "projectFilePath": "C:\\Users\\vladimirsh\\Documents\\kursach\\TVProgram\\TVProgram.Tests\\TVProgram.Tests.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1201",
+      "level": "Error",
+      "message": "Project TVProgram is not compatible with net5.0 (.NETCoreApp,Version=v5.0). Project TVProgram supports: net5.0-windows7.0 (.NETCoreApp,Version=v5.0)",
+      "libraryId": "TVProgram",
+      "targetGraphs": [
+        "net5.0"
+      ]
+    }
+  ]
+}

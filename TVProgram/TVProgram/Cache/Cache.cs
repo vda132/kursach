@@ -19,16 +19,8 @@ namespace TVProgram
             get => currentUser;
             set
             {
-                if (value == null)
-                    CurrentUserStatus = UserStatus.Unknown;
-                if (value.Status == "admin")
-                    CurrentUserStatus = UserStatus.Admin;
-                else
-                    CurrentUserStatus = UserStatus.User;
-
                 currentUser = value;
             }
         }
-        public UserStatus CurrentUserStatus { get; private set; }
     }
 }

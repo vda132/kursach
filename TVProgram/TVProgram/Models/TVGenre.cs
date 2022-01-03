@@ -2,8 +2,9 @@
 
 namespace TVProgram.Models
 {
-    class TVGenre : IModel
+    public class TVGenre : IModel
     {
+        // properties
         public int IDGenre { get; set; }
         public string NameGenre { get; set; }
 

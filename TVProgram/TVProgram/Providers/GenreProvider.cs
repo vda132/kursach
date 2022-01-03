@@ -51,10 +51,7 @@ namespace TVProgram.Providers
                 }
             }
 
-            using (var connection = GetConnection())
-            {
-                SetShows(pk, genre);
-            }
+            SetShows(pk, genre);
 
             return genre;
         }

@@ -3,7 +3,7 @@ using TVProgram.Models;
 
 namespace TVProgram.DisplayModels
 {
-    class TVProgram
+    class TVProgram : IDateTimeModel
     {
         // properties
         public int IDChannel { get; set; }
@@ -37,6 +37,24 @@ namespace TVProgram.DisplayModels
                 newLine +
                 NameShow + newLine +
                 StartWeekDay + " " + StartTime + " - " + EndWeekDay + " " + EndTime;
+        }
+
+        // IDateTimeModel implementation
+        public string DayOfWeek { get => StartWeekDay; }
+        public Time Time { get => StartTime; }
+
+        public override bool Equals(object obj)
+        {
+            return obj is TVProgram program &&
+                   IDChannel == program.IDChannel &&
+                   IDShow == program.IDShow &&
+                   StartWeekDay.Equals(program.StartWeekDay) &&
+                   StartTime.Equals(program.StartTime);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(IDChannel, IDShow, StartWeekDay, StartTime);
         }
     }
 }
