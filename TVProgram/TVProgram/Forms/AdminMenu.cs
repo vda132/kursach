@@ -111,6 +111,12 @@ namespace TVProgram.Forms
         {
             Application.Exit();
         }
+
+        private void UpdateData_Click(object sender, EventArgs e)
+        {
+            UpdateGenres();
+            UpdateChannels();
+        }
         #endregion
 
         private TVGenre GetSelectedGenre()

@@ -52,7 +52,7 @@ namespace TVProgram
                 this.Hide();
                 new ProgramsShow().Show();
             }
-            if (currentUser.Status.Equals("admin"))
+            else if (currentUser.Status.Equals("admin"))
             {
                 // Show form with admin menu
                 this.Hide();

@@ -21,6 +21,12 @@ namespace TVProgram.DataStructures
                 this.collection.Add(item);
         }
 
+        public CircularList(T[] array)
+        {
+            foreach (var item in array)
+                this.collection.Add(item);
+        }
+
         public T GetElement(T item)
         {
             return collection.Find(x => x.Equals(item));

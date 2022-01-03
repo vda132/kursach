@@ -15,7 +15,20 @@ namespace TVProgram.Forms
         private List<TVShow> shows;
         private List<TVShow> displayShows;
 
+        private List<Models.TVProgram> programs;
+        private List<DisplayModels.TVProgram> displayPrograms;
+        private DayTimeSortedList<DisplayModels.TVProgram> sortedDisplayPrograms = new DayTimeSortedList<DisplayModels.TVProgram>();
+
         private List<TVGenre> genres;
+        private TVGenre selectedGenre;
+
+        private CircularList<string> daysOfWeek = new(Models.DayOfWeek.DaysOfWeek);
+
+        private string selectedLeftDay = "Monday";
+        private string selectedRightDay = "Sunday";
+
+        private Time leftTime = new Time(0, 0);
+        private Time rightTime = new Time(23, 59);
 
         public ChannelAdminMenu()
         {
@@ -30,32 +43,72 @@ namespace TVProgram.Forms
             Text = $"\"{currentChannel.NameChannel}\" канал";
 
             // Fill shows
+            LoadShows();
+            UpdateShowsDataGrid();
+            ShowsDataGrid.Columns["IDShow"].Visible = false;
+            ShowsDataGrid.Columns["Genres"].Visible = false;
+            ShowsDataGrid.Columns["Programs"].Visible = false;
+            ShowsDataGrid.Columns["Channels"].Visible = false;
 
+            // Fill programs
+            LoadPrograms();
+            UpdateProgramsDataGrid();
+            ProgramsDataGrid.Columns["IDShow"].Visible = false;
+            ProgramsDataGrid.Columns["IDChannel"].Visible = false;
+            ProgramsDataGrid.Columns["DayOfWeek"].Visible = false;
+            ProgramsDataGrid.Columns["Time"].Visible = false;
 
             // Fill genres
             genres = ProviderFactory.Instance.GenreProvider.GetAll().ToList();
+
+            // Fill genres combo box
+            GenresComboBox.Items.AddRange(genres.Select(x => x.NameGenre).ToArray());
+            GenresComboBox.Items.Add("Все");
+            GenresComboBox.Text = "Все";
+
+            GenresProgramsComboBox.Items.AddRange(genres.Select(x => x.NameGenre).ToArray());
+            GenresProgramsComboBox.Items.Add("Все");
+            GenresProgramsComboBox.Text = "Все";
+
+            // Fill days of week
+            LeftComboBox.Items.AddRange(daysOfWeek.ToArray());
+            RightComboBox.Items.AddRange(daysOfWeek.ToArray());
+
+            LeftComboBox.Text = selectedLeftDay;
+            RightComboBox.Text = selectedRightDay;
+
+            // Fill times
+            StartTimeTextBox.Text = "00:00";
+            EndTimeTextBox.Text = "23:59";
         }
 
+        #region Handlers
         private void AddShowButton_Click(object sender, EventArgs e)
         {
-
+            new AddEditShow().Show();
+            LoadShows();
+            FilterShows();
+            UpdateShowsDataGrid();
         }
 
         private void RemoveShowButton_Click(object sender, EventArgs e)
         {
-
+            ProviderFactory.Instance.ShowProvider.Delete(GetSelectedShow().IDShow);
         }
 
         private void ShowsDataGrid_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-
+            new AddEditShow(GetSelectedShow()).Show();
+            LoadShows();
+            FilterShows();
+            UpdateShowsDataGrid();
         }
 
         // Filter
         private void ShowButton_Click(object sender, EventArgs e)
         {
-            Filter();
-            UpdateDataGrid();
+            FilterShows();
+            UpdateShowsDataGrid();
         }
 
         private void ChannelAdminMenu_FormClosed(object sender, FormClosedEventArgs e)
@@ -63,26 +116,262 @@ namespace TVProgram.Forms
             Application.Exit();
         }
 
-        private void UpdateDataGrid()
+        private void GenresComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                selectedGenre = genres[GenresComboBox.SelectedIndex];
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                selectedGenre = null;
+            }
+        }
+
+        private void ProgramsDataGrid_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var selectedProgram = GetSelectedProgram();
+            var editableProgram = ProviderFactory.Instance.ProgramProvider.Get(new TVProgramPK
+            {
+                IDShow = selectedProgram.IDShow,
+                IDChannel = selectedProgram.IDChannel,
+                StartDayOfWeek = selectedProgram.StartWeekDay,
+                StartTime = selectedProgram.StartTime
+            });
+            new AddEditProgram(editableProgram).Show();
+            LoadPrograms();
+            FilterPrograms();
+        }
+
+        private void AddProgram_Click(object sender, EventArgs e)
+        {
+            new AddEditProgram().Show();
+            LoadPrograms();
+            FilterPrograms();
+        }
+
+        private void RemoveProgram_Click(object sender, EventArgs e)
+        {
+            var selectedProgram = GetSelectedProgram();
+            ProviderFactory.Instance.ProgramProvider.Delete(new TVProgramPK
+            {
+                IDShow = selectedProgram.IDShow,
+                IDChannel = selectedProgram.IDChannel,
+                StartDayOfWeek = selectedProgram.StartWeekDay,
+                StartTime = selectedProgram.StartTime
+            });
+            LoadPrograms();
+            FilterPrograms();
+        }
+
+        private void Filter_Click(object sender, EventArgs e)
+        {
+            FilterPrograms();
+        }
+
+        private void GenresProgramsComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                selectedGenre = genres[GenresComboBox.SelectedIndex];
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                selectedGenre = null;
+            }
+        }
+
+        private void LeftComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            selectedLeftDay = daysOfWeek.GetElement(LeftComboBox.Text);
+        }
+
+        private void RightComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            selectedRightDay = daysOfWeek.GetElement(RightComboBox.Text);
+        }
+
+        private void UpdateData_Click(object sender, EventArgs e)
+        {
+            LoadShows();
+            FilterShows();
+            UpdateShowsDataGrid();
+
+            LoadPrograms();
+            FilterPrograms();
+        }
+        #endregion
+
+        private void LoadShows()
+        {
+            shows = ProviderFactory.Instance.ChannelProvider.Get(currentChannel.IDChannel).Shows.ToList();
+            displayShows = shows;
+        }
+
+        private void LoadPrograms()
+        {
+            programs = ProviderFactory.Instance.ProgramProvider.GetAll().Where(x => x.IDChannel == currentChannel.IDChannel).ToList();
+            SetDisplayProgramsByPrograms();
+        }
+
+        private void FilterShows()
+        {
+            // Reset list
+            displayShows = new();
+
+            // Select by name
+            var name = ShowTextBox.Text;
+            if (!string.IsNullOrEmpty(name))
+            {
+                foreach (var show in shows)
+                {
+                    if (show.NameShow.Contains(name))
+                        displayShows.Add(show);
+                }
+            }
+            else
+            {
+                displayShows = shows;
+            }
+
+            // Select by genre
+            var temp = new List<TVShow>();
+            if (selectedGenre is not null)
+            {
+                foreach (var show in displayShows)
+                {
+                    if (show.Genres.Contains(selectedGenre))
+                        temp.Add(show);
+                }
+                displayShows = temp;
+            }
+
+            UpdateShowsDataGrid();
+        }
+
+        private void FilterPrograms()
+        {
+            var showName = ShowTextBox.Text;
+
+            // Reset list
+            sortedDisplayPrograms = new();
+
+            // Select by genre
+            if (selectedGenre is not null)
+            {
+                foreach (var program in programs)
+                {
+                    var show = ProviderFactory.Instance.ShowProvider.Get(program.IDShow);
+                    if (show.Genres.ToList().Any(x => x.IDGenre == selectedGenre.IDGenre))
+                        sortedDisplayPrograms.TryAdd(new DisplayModels.TVProgram(program));
+                }
+            }
+            else
+            {
+                SetDisplayProgramsByPrograms();
+            }
+
+            // Select by show and channel
+            var temp = new DayTimeSortedList<DisplayModels.TVProgram>();
+            foreach (var program in sortedDisplayPrograms)
+            {
+                if (program.NameShow.Contains(showName))
+                    temp.TryAdd(program);
+            }
+            sortedDisplayPrograms = temp;
+
+            // Select by day of week
+            temp = new DayTimeSortedList<DisplayModels.TVProgram>();
+
+            var days = daysOfWeek.GetElementsBetween(selectedLeftDay, selectedRightDay).ToList();
+            foreach (var program in sortedDisplayPrograms)
+            {
+                if (days.Contains(program.StartWeekDay))
+                    temp.TryAdd(program);
+            }
+            sortedDisplayPrograms = temp;
+
+            // Select by time
+            // Default values
+            Time leftTime = new Time(0, 0);
+            Time rightTime = new Time(23, 59);
+            try
+            {
+                leftTime = Time.FromString(StartTimeTextBox.Text);
+                rightTime = Time.FromString(EndTimeTextBox.Text);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Время было задано в неправильном формате", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            temp = new DayTimeSortedList<DisplayModels.TVProgram>();
+            foreach (var program in sortedDisplayPrograms)
+            {
+                if (program.StartWeekDay.Equals(days[0])) // Check start time
+                {
+                    if (program.StartTime.GreaterOrEqualTo(leftTime))
+                        temp.TryAdd(program);
+                }
+                else if (program.StartWeekDay.Equals(days[^1])) // Check end time
+                {
+                    if (program.StartTime.LessOrEqualTo(rightTime))
+                        temp.TryAdd(program);
+                }
+                else if (!program.StartWeekDay.Equals(days[0]) &&
+                    !program.StartWeekDay.Equals(days[^1]) &&
+                    days.Contains(program.StartWeekDay)) // Write if value between left and right lines
+                    temp.TryAdd(program);
+            }
+            sortedDisplayPrograms = temp;
+
+            UpdateProgramsDataGrid();
+        }
+
+        private void UpdateShowsDataGrid()
         {
             ShowsDataGrid.DataSource = displayShows;
         }
 
-        private void LoadShows()
+        private void UpdateProgramsDataGrid()
         {
-            var showIds = currentChannel.Programs.Select(x => x.IDShow);
-
-            shows = new();
-            foreach (var showId in showIds)
-            {
-
-            }
+            displayPrograms = sortedDisplayPrograms.ToList();
+            ProgramsDataGrid.DataSource = displayPrograms;
         }
 
-        private void Filter()
+        private void SetDisplayProgramsByPrograms()
         {
-            // Reset list
-            displayShows = new();
+            // Set programs to displayPrograms to show them
+            // Used to not override ToString()
+            sortedDisplayPrograms = new DayTimeSortedList<DisplayModels.TVProgram>();
+            foreach (var program in programs)
+                sortedDisplayPrograms.TryAdd(new DisplayModels.TVProgram(program));
+
+            displayPrograms = sortedDisplayPrograms.ToList();
+        }
+
+        private TVShow GetSelectedShow()
+        {
+            // If nothing is selected but method is called
+            // We will do nothing
+            if (ShowsDataGrid.SelectedRows.Count <= 0) return null;
+
+            // Get index of program in displayPrograms
+            var index = ShowsDataGrid.SelectedRows[0].Index;
+            // Get selected program
+            return displayShows[index];
+        }
+
+        private DisplayModels.TVProgram GetSelectedProgram()
+        {
+            // If nothing is selected but method is called
+            // We will do nothing
+            if (ProgramsDataGrid.SelectedRows.Count <= 0) return null;
+
+            // Get index of program in displayPrograms
+            var index = ProgramsDataGrid.SelectedRows[0].Index;
+            // Get selected program
+            return sortedDisplayPrograms[index];
         }
     }
 }

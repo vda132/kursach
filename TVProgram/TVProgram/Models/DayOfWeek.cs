@@ -30,7 +30,7 @@ namespace TVProgram.Models
         /// <summary>
         /// To use linq queries
         /// </summary>
-        private static string[] DaysOfWeek => 
+        public static string[] DaysOfWeek => 
             new string[] { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };
 
         /// <summary>
@@ -74,6 +74,6 @@ namespace TVProgram.Models
 
             return dayOfWeekValue > comparableDayOfWeekValue ? 1 :
                    dayOfWeekValue < comparableDayOfWeekValue ? -1 : 0;
-        }
+        }   
     }
 }

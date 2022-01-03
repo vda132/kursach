@@ -1,0 +1,106 @@
+select * from UserTable;
+select * from ShowChannel;
+select * from Channel;
+select * from Show;
+select * from Genre;
+select * from GenreShow;
+select * from Program;
+
+insert into Genre(NameGenre) values ('news'), ('sport'), ('film'), ('serial')
+delete from Genre;
+
+insert into Channel (NameChannel) values ('1+1'), ('News'), ('Football'), ('Fox')
+delete from Channel where IDChannel = 2;
+
+insert into Show(NameShow) values ('EPL'), ('Ranok'), ('Grimm'), ('Home alone'), ('Flash')
+insert into Show(NameShow) values ('UPL')
+
+insert into GenreShow(IDShow, IDGenre) values (2, 7), (3, 6), (4, 9), (5, 8), (6, 9)
+insert into GenreShow(IDShow, IDGenre) values (7, 7)
+
+select NameShow, NameGenre
+from Show inner join GenreShow on Show.IDShow = GenreShow.IDShow
+		inner join Genre on Genre.IDGenre = GenreShow.IDGenre
+
+delete from Program;
+
+insert into Program (IDChannel, IDShow, DayWeekBegin, TimeBegin, DayWeekEnd, TimeEnd)
+values (5, 2, 'Monday', '12:30', 'Monday', '14:30')
+
+insert into Program(IDChannel, IDShow, DayWeekBegin, TimeBegin, DayWeekEnd, TimeEnd)
+values (3, 7, 'Wednesday', '22:00', 'Thursday', '00:00'),
+	   (4, 3, 'Monday', '08:00', 'Monday', '10:00'),
+	   (4, 3, 'Tuesday', '08:00', 'Tuesday', '10:00'),
+	   (4, 3, 'Wednesday', '08:00', 'Wednesday', '10:00'),
+	   (4, 3, 'Thursday', '08:00', 'Thursday', '10:00'),
+	   (4, 3, 'Friday', '08:00', 'Friday', '10:00'),
+	   (6, 4, 'Friday', '19:00', 'Friday', '19:40'),
+	   (3, 5, 'Sunday', '21:00', 'Sunday', '23:00'),
+	   (6, 6, 'Thursday', '19:00', 'Thursday', '19:40')
+
+insert into UserTable(UserLogin, UserPassword, UserStatus) values('admin', 'admin', 'admin');
+
+insert into UserTable(UserLogin, UserPassword, UserStatus)
+select NameChannel, NameChannel, NameChannel
+from Channel;
+
+CREATE TABLE ShowChannel
+(
+IDShow INT NOT NULL CONSTRAINT FK_IDShow_Show FOREIGN KEY REFERENCES Show(IDShow) on update cascade on delete cascade,
+IDChannel INT NOT NULL CONSTRAINT FK_IDChannel_Channel FOREIGN KEY REFERENCES Channel(IDChannel) on update cascade on delete cascade,
+CONSTRAINT PK_ShowChannel PRIMARY KEY(IDShow, IDChannel)
+)
+
+insert into ShowChannel(IDChannel, IDShow)
+select distinct IDChannel, IDShow
+from Program
+
+select *
+from Channel inner join ShowChannel on Channel.IDChannel = ShowChannel.IDChannel
+	inner join Show on Show.IDShow = ShowChannel.IDShow
+
+drop table Program;
+
+CREATE TABLE Channel
+(
+IDChannel INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_IDChannel PRIMARY KEY,
+NameChannel VARCHAR(50) NOT NULL
+)
+
+CREATE TABLE Show
+(
+IDShow INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_IDShow PRIMARY KEY,
+NameShow VARCHAR(50) NOT NULL
+)
+
+CREATE TABLE Genre
+(
+IDGenre INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_IDGenre PRIMARY KEY,
+NameGenre VARCHAR(50) NOT NULL
+)
+
+CREATE TABLE GenreShow
+(
+IDShow INT NOT NULL CONSTRAINT FK_IDShow FOREIGN KEY REFERENCES Show(IDShow) on update cascade on delete cascade,
+IDGenre INT NOT NULL CONSTRAINT FK_IDGenre FOREIGN KEY REFERENCES Genre(IDGenre) on update cascade on delete cascade,
+CONSTRAINT PK_GenreShowPK PRIMARY KEY(IDShow,IDGenre)
+)
+
+CREATE TABLE ShowChannel
+(
+IDShow INT NOT NULL CONSTRAINT FK_IDShow_Show FOREIGN KEY REFERENCES Show(IDShow) on update cascade on delete cascade,
+IDChannel INT NOT NULL CONSTRAINT FK_IDChannel_Channel FOREIGN KEY REFERENCES Channel(IDChannel) on update cascade on delete cascade,
+CONSTRAINT PK_ShowChannel PRIMARY KEY(IDShow, IDChannel)
+)
+
+CREATE TABLE Program
+(
+IDChannel INT NOT NULL,
+IDShow INT NOT NULL,
+DayWeekBegin VARCHAR(15) NOT NULL,
+DayWeekEnd VARCHAR(15) NOT NULL,
+TimeBegin TIME NOT NULL,
+TimeEnd TIME NOT NULL,
+CONSTRAINT PK_Program PRIMARY KEY(IDChannel,IDShow,DayWeekBegin,TimeBegin),
+CONSTRAINT FK_IDChannel_IDShow FOREIGN KEY (IDShow, IDChannel) REFERENCES ShowChannel(IDShow, IDChannel) on update cascade on delete cascade
+)

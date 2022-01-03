@@ -10,19 +10,16 @@
     <Compile Update="Forms\AddEditGenre.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\AddShow.cs">
+    <Compile Update="Forms\AddEditProgram.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\AddEditShow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\AdminMenu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\AdminProgramsShow.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Update="Forms\ChannelAdminMenu.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\EditShow.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\ProgramsShow.cs">

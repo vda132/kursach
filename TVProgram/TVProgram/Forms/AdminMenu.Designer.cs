@@ -45,6 +45,7 @@ namespace TVProgram.Forms
             this.RemoveChannelButton = new System.Windows.Forms.Button();
             this.AddChannelButton = new System.Windows.Forms.Button();
             this.ChannelsDataGrid = new System.Windows.Forms.DataGridView();
+            this.UpdateData = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GenresDataGrid)).BeginInit();
             this.panel2.SuspendLayout();
@@ -214,11 +215,22 @@ namespace TVProgram.Forms
             this.ChannelsDataGrid.Size = new System.Drawing.Size(378, 432);
             this.ChannelsDataGrid.TabIndex = 1;
             // 
+            // UpdateData
+            // 
+            this.UpdateData.Location = new System.Drawing.Point(781, 1);
+            this.UpdateData.Name = "UpdateData";
+            this.UpdateData.Size = new System.Drawing.Size(94, 29);
+            this.UpdateData.TabIndex = 2;
+            this.UpdateData.Text = "Обновить";
+            this.UpdateData.UseVisualStyleBackColor = true;
+            this.UpdateData.Click += new System.EventHandler(this.UpdateData_Click);
+            // 
             // AdminMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(778, 531);
+            this.ClientSize = new System.Drawing.Size(879, 531);
+            this.Controls.Add(this.UpdateData);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "AdminMenu";
@@ -252,5 +264,6 @@ namespace TVProgram.Forms
         private System.Windows.Forms.Button RemoveChannelButton;
         private System.Windows.Forms.Button AddChannelButton;
         private System.Windows.Forms.DataGridView ChannelsDataGrid;
+        private System.Windows.Forms.Button UpdateData;
     }
 }

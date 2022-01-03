@@ -17,8 +17,7 @@ namespace TVProgram.Forms
         private List<Models.TVGenre> genres;
         private Models.TVGenre selectedGenre;
 
-        // ToDo: translate to russian
-        private CircularList<string> daysOfWeek = new() { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+        private CircularList<string> daysOfWeek = new(Models.DayOfWeek.DaysOfWeek);
 
         private string selectedLeftDay = "Monday";
         private string selectedRightDay = "Sunday";
@@ -39,12 +38,16 @@ namespace TVProgram.Forms
             UpdateDataGrid();
             ShowsDataGrid.Columns["IDShow"].Visible = false;
             ShowsDataGrid.Columns["IDChannel"].Visible = false;
+            ShowsDataGrid.Columns["DayOfWeek"].Visible = false;
+            ShowsDataGrid.Columns["Time"].Visible = false;
 
             // Get genres from db
             genres = ProviderFactory.Instance.GenreProvider.GetAll().ToList();
 
             // Fill genre
             GenresComboBox.Items.AddRange(genres.Select(x => x.NameGenre).ToArray());
+            GenresComboBox.Items.Add("Все");
+            GenresComboBox.Text = "Все";
 
             // Fill days of week
             LeftComboBox.Items.AddRange(daysOfWeek.ToArray());
@@ -78,22 +81,26 @@ namespace TVProgram.Forms
         // Choose genre to filter
         private void genresComboBox_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            if (sender is ComboBox comboBox)
-                selectedGenre = genres[comboBox.SelectedIndex];
+            try
+            {
+                selectedGenre = genres[GenresComboBox.SelectedIndex];
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                selectedGenre = null;
+            }
         }
 
         // Choose start day of week to filter
         private void leftComboBox_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            if (sender is ComboBox comboBox)
-                selectedLeftDay = daysOfWeek.GetElement(comboBox.Text);
+            selectedLeftDay = daysOfWeek.GetElement(LeftComboBox.Text);
         }
 
         // Choose end day of week to filter
         private void rightComboBox_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            if (sender is ComboBox comboBox)
-                selectedRightDay = daysOfWeek.GetElement(comboBox.Text);
+            selectedRightDay = daysOfWeek.GetElement(RightComboBox.Text);
         }
 
         private void ProgramsShow_FormClosed(object sender, FormClosedEventArgs e)
