@@ -32,6 +32,8 @@ namespace TVProgram.Providers
 
         public override TVGenre Get(int pk)
         {
+            TVGenre genre = null;
+
             using (var connection = GetConnection())
             {
                 var query = $"SELECT IDGenre, NameGenre FROM Genre WHERE IDGenre = {pk}";
@@ -41,30 +43,42 @@ namespace TVProgram.Providers
                 if (result.HasRows)
                 {
                     result.Read();
-                    return GetGenre(result, connection);
+                    genre = GetGenre(result);
                 }
-                throw new ArgumentException("Genre has not been found");
+                else
+                {
+                    throw new ArgumentException("Genre has not been found");
+                }
             }
+
+            SetShows(pk, genre);
+
+            return genre;
         }
 
         public override IReadOnlyCollection<TVGenre> GetAll()
         {
+            var genres = new List<TVGenre>();
+
             using (var connection = GetConnection())
             {
                 var query = $"SELECT IDGenre, NameGenre FROM Genre";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
 
-                var genres = new List<TVGenre>();
                 if (result.HasRows)
                 {
                     while (result.Read())
                     {
-                        genres.Add(GetGenre(result, connection));
+                        genres.Add(GetGenre(result));
                     }
                 }
-                return genres;
             }
+
+            foreach (var genre in genres)
+                SetShows(genre.IDGenre, genre);
+
+            return genres;
         }
 
         public override void Update(int pk, TVGenre entity)
@@ -77,35 +91,38 @@ namespace TVProgram.Providers
             }
         }
 
-        private TVGenre GetGenre(SqlDataReader reader, SqlConnection connection)
+        private TVGenre GetGenre(SqlDataReader reader)
         {
             return new TVGenre
             {
                 IDGenre = (int)reader["IDGenre"],
-                NameGenre = (string)reader["NameGenre"],
-                Shows = GetShows((int)reader["IDGenre"], connection)
+                NameGenre = (string)reader["NameGenre"]
             };
         }
 
-        private IReadOnlyCollection<TVShow> GetShows(int idGenre, SqlConnection connection)
+        private void SetShows(int idGenre, TVGenre genre)
         {
-            var query = $"SELECT IDShow, NameShow FROM Show INNER JOIN GenreShow ON Show.IDShow = GenreShow.IDShow WHERE IDGenre = {idGenre}";
-            var select = new SqlCommand(query, connection);
-            var result = select.ExecuteReader();
-
-            var shows = new List<TVShow>();
-            if (result.HasRows)
+            using (var connection = GetConnection())
             {
-                while (result.Read())
+                var query = $"SELECT Show.IDShow, NameShow FROM Show INNER JOIN GenreShow ON Show.IDShow = GenreShow.IDShow WHERE IDGenre = {idGenre}";
+                var select = new SqlCommand(query, connection);
+                var result = select.ExecuteReader();
+
+                var shows = new List<TVShow>();
+                if (result.HasRows)
                 {
-                    shows.Add(new TVShow
+                    while (result.Read())
                     {
-                        IDShow = (int)result["IDShow"],
-                        NameShow = (string)result["NameShow"]
-                    });
+                        shows.Add(new TVShow
+                        {
+                            IDShow = (int)result["IDShow"],
+                            NameShow = (string)result["NameShow"]
+                        });
+                    }
                 }
+
+                genre.Shows = shows;
             }
-            return shows;
         }
     }
 }

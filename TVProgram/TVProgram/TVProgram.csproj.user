@@ -4,6 +4,27 @@
     <Compile Update="Authorization.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\AddEditChannel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\AddEditGenre.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\AddEditProgram.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\AddEditShow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\AdminMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\ChannelAdminMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\ProgramsShow.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\Registration.cs">
       <SubType>Form</SubType>
     </Compile>

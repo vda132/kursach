@@ -2,7 +2,7 @@
 
 namespace TVProgram.Models
 {
-    class TVShow : IModel
+    public class TVShow : IModel
     {
         public int IDShow { get; set; }
         public string NameShow { get; set; }
@@ -11,6 +11,11 @@ namespace TVProgram.Models
         /// It is realization of many to many relationship
         /// </summary>
         public IReadOnlyCollection<TVGenre> Genres { get; set; } = new List<TVGenre>();
+
+        /// <summary>
+        /// It is realization of many to many relationship
+        /// </summary>
+        public IReadOnlyCollection<TVChannel> Channels { get; set; } = new List<TVChannel>();
 
         /// <summary>
         /// It is realization of one to many relationship

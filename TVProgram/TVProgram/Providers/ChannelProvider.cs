@@ -32,6 +32,8 @@ namespace TVProgram.Providers
 
         public override TVChannel Get(int pk)
         {
+            TVChannel channel = null;
+
             using (var connection = GetConnection())
             {
                 var query = $"SELECT IDChannel, NameChannel FROM Channel WHERE IDChannel = {pk}";
@@ -41,21 +43,29 @@ namespace TVProgram.Providers
                 if (result.HasRows)
                 {
                     result.Read();
-                    return GetChannel(result, connection);
+                    channel = GetChannel(result, connection);
                 }
-                throw new ArgumentException("Channel has not been found");
+                else
+                {
+                    throw new ArgumentException("Channel has not been found");
+                }
             }
+
+            SetLists(pk, channel);
+
+            return channel;
         }
 
         public override IReadOnlyCollection<TVChannel> GetAll()
         {
+            var channels = new List<TVChannel>();
+
             using (var connection = GetConnection())
             {
                 var query = $"SELECT IDChannel, NameChannel FROM Channel";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
 
-                var channels = new List<TVChannel>();
                 if (result.HasRows)
                 {
                     while(result.Read())
@@ -63,8 +73,13 @@ namespace TVProgram.Providers
                         channels.Add(GetChannel(result, connection));
                     }
                 }
-                return channels;
+                
             }
+
+            foreach (var channel in channels)
+                SetLists(channel.IDChannel, channel);
+
+            return channels;
         }
 
         public override void Update(int pk, TVChannel entity)
@@ -82,34 +97,66 @@ namespace TVProgram.Providers
             return new TVChannel
             {
                 IDChannel = (int)reader["IDChannel"],
-                NameChannel = (string)reader["NameChannel"],
-                Programs = GetPrograms((int)reader["IDChannel"], connection)
+                NameChannel = (string)reader["NameChannel"]
             };
         }
 
-        public IReadOnlyCollection<Models.TVProgram> GetPrograms(int idChannel, SqlConnection connection)
+        private void SetLists(int idChannel, TVChannel channel)
         {
-            var query = $"SELECT IDChannel, IDShow, DayWeekBegin, DayWeekEnd, TimeBegin, TimeEnd FROM Program WHERE IDChannel = '{idChannel}'";
-            var select = new SqlCommand(query, connection);
-            var result = select.ExecuteReader();
+            SetShows(idChannel, channel);
+            SetPrograms(idChannel, channel);
+        }
 
-            var programs = new List<Models.TVProgram>();
-            if (result.HasRows)
+        private void SetShows(int idChannel, TVChannel channel)
+        {
+            using (var connection = GetConnection())
             {
-                while (result.Read())
+                var query = $"SELECT Show.IDShow, NameShow FROM Show INNER JOIN ShowChannel ON Show.IDShow = ShowChannel.IDShow WHERE IDChannel = {idChannel}";
+                var select = new SqlCommand(query, connection);
+                var result = select.ExecuteReader();
+
+                var shows = new List<TVShow>();
+                if (result.HasRows)
                 {
-                    programs.Add(new Models.TVProgram
+                    while (result.Read())
                     {
-                        IDChannel = (int)result["IDChannel"],
-                        IDShow = (int)result["IDShow"],
-                        StartWeekDay = (string)result["DayWeekBegin"],
-                        EndWeekDay = (string)result["DayWeekEnd"],
-                        StartTime = Time.FromString(result["TimeBegin"].ToString()),
-                        EndTime = Time.FromString(result["EndBegin"].ToString())
-                    });
+                        shows.Add(new TVShow
+                        {
+                            IDShow = (int)result["IDShow"],
+                            NameShow = (string)result["NameShow"]
+                        });
+                    }
                 }
+                channel.Shows = shows;
             }
-            return programs;
+        }
+
+        private void SetPrograms(int idChannel, TVChannel channel)
+        {
+            using (var connection = GetConnection())
+            {
+                var query = $"SELECT IDChannel, IDShow, DayWeekBegin, DayWeekEnd, TimeBegin, TimeEnd FROM Program WHERE IDChannel = '{idChannel}'";
+                var select = new SqlCommand(query, connection);
+                var result = select.ExecuteReader();
+
+                var programs = new List<Models.TVProgram>();
+                if (result.HasRows)
+                {
+                    while (result.Read())
+                    {
+                        programs.Add(new Models.TVProgram
+                        {
+                            IDChannel = (int)result["IDChannel"],
+                            IDShow = (int)result["IDShow"],
+                            StartWeekDay = (string)result["DayWeekBegin"],
+                            EndWeekDay = (string)result["DayWeekEnd"],
+                            StartTime = Time.FromString(result["TimeBegin"].ToString()),
+                            EndTime = Time.FromString(result["TimeEnd"].ToString())
+                        });
+                    }
+                }
+                channel.Programs = programs;
+            }
         }
     }
 }
