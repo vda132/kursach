@@ -145,10 +145,10 @@ namespace Library.Forms
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.tabPage12 = new System.Windows.Forms.TabPage();
+            this.bookCatalogueInfoButton = new System.Windows.Forms.Button();
             this.booksCatalogueDataGridView = new System.Windows.Forms.DataGridView();
             this.themeCatologButton = new System.Windows.Forms.Button();
             this.alphaviteButton = new System.Windows.Forms.Button();
-            this.bookCatalogueInfoButton = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -1348,6 +1348,16 @@ namespace Library.Forms
             this.tabPage12.Text = "Каталог книг";
             this.tabPage12.UseVisualStyleBackColor = true;
             // 
+            // bookCatalogueInfoButton
+            // 
+            this.bookCatalogueInfoButton.Location = new System.Drawing.Point(570, 374);
+            this.bookCatalogueInfoButton.Name = "bookCatalogueInfoButton";
+            this.bookCatalogueInfoButton.Size = new System.Drawing.Size(250, 32);
+            this.bookCatalogueInfoButton.TabIndex = 30;
+            this.bookCatalogueInfoButton.Text = "Подробная информация о книге";
+            this.bookCatalogueInfoButton.UseVisualStyleBackColor = true;
+            this.bookCatalogueInfoButton.Click += new System.EventHandler(this.bookCatalogueInfoButton_Click);
+            // 
             // booksCatalogueDataGridView
             // 
             this.booksCatalogueDataGridView.AllowUserToAddRows = false;
@@ -1380,16 +1390,6 @@ namespace Library.Forms
             this.alphaviteButton.Text = "Алфавитный каталог";
             this.alphaviteButton.UseVisualStyleBackColor = true;
             this.alphaviteButton.Click += new System.EventHandler(this.alphaviteButton_Click);
-            // 
-            // bookCatalogueInfoButton
-            // 
-            this.bookCatalogueInfoButton.Location = new System.Drawing.Point(570, 374);
-            this.bookCatalogueInfoButton.Name = "bookCatalogueInfoButton";
-            this.bookCatalogueInfoButton.Size = new System.Drawing.Size(250, 32);
-            this.bookCatalogueInfoButton.TabIndex = 30;
-            this.bookCatalogueInfoButton.Text = "Подробная информация о книге";
-            this.bookCatalogueInfoButton.UseVisualStyleBackColor = true;
-            this.bookCatalogueInfoButton.Click += new System.EventHandler(this.bookCatalogueInfoButton_Click);
             // 
             // WorkSpace
             // 
