@@ -7,21 +7,13 @@ namespace TVProgram.Models
     static class DayOfWeek
     {
         // Days as static string
-        // ToDo: Translate to russian
-        public static string Monday => "Monday";
-        public static string Tuesday => "Tuesday";
-        public static string Wednesday => "Wednesday";
-        public static string Thursday => "Thursday";
-        public static string Friday => "Friday";
-        public static string Saturday => "Saturday";
-        public static string Sunday => "Sunday";
-        //public static string Monday => "Понедельник";
-        //public static string Tuesday => "Вторник";
-        //public static string Wednesday => "Среда";
-        //public static string Thursday => "Четверг";
-        //public static string Friday => "Пятница";
-        //public static string Saturday => "Суббота";
-        //public static string Sunday => "Воскресенье";
+        public static string Monday => "Понедельник";
+        public static string Tuesday => "Вторник";
+        public static string Wednesday => "Среда";
+        public static string Thursday => "Четверг";
+        public static string Friday => "Пятница";
+        public static string Saturday => "Суббота";
+        public static string Sunday => "Воскресенье";
 
         public static Dictionary<string, int> Sort = new()
         {
