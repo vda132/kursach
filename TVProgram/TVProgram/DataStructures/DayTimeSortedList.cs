@@ -23,6 +23,7 @@ namespace TVProgram.DataStructures
             set => data[index] = value;
         }
 
+        // Add with sort
         public bool TryAdd(T item)
         {
             if (!Models.DayOfWeek.CheckDayOfWeek(item.DayOfWeek)) return false;

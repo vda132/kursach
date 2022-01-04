@@ -13,14 +13,6 @@ namespace TVProgram
         }
         #endregion
 
-        private User currentUser;
-        public User CurrectUser
-        {
-            get => currentUser;
-            set
-            {
-                currentUser = value;
-            }
-        }
+        public User CurrectUser { get; set; }
     }
 }

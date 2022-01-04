@@ -46,12 +46,14 @@ namespace TVProgram.DataStructures
             var leftIndex = collection.FindIndex(x => x.Equals(left));
             var rightIndex = collection.FindIndex(x => x.Equals(right));
 
+            // If days between is only one return this day
             if (leftIndex == rightIndex)
             {
                 result.Add(collection[leftIndex]);
                 return result;
             }
 
+            // If right day greater than left return days between these ones
             if (leftIndex < rightIndex)
             {
                 for (int i = leftIndex; i <= rightIndex; ++i)
@@ -59,6 +61,7 @@ namespace TVProgram.DataStructures
                 return result;
             }
 
+            // If left day greater than right return days from left to last and days from first to right
             for (int i = leftIndex; i < collection.Count; ++i)
                 result.Add(collection[i]);
 
