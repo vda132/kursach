@@ -670,53 +670,67 @@ namespace Library.Forms
                 Reset();
             }
         }
-
+        //обработка нажатия на кнопку о добавлении книги автора
         private void addBookAuthorbutton_Click(object sender, EventArgs e)
         {
+            //проверка на то выбрана ли непустая строка
             if (books.Count == 0 || bookDataGridView.CurrentCell.RowIndex==books.Count)
             {
+                //вывод сообщения
                 MessageBox.Show("Выберите какуюто книгу", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //создание экземпляра книги и присвоение ей значений из выбраной строки
             BookFund book = new BookFund();
             book = books[bookDataGridView.CurrentCell.RowIndex];
+            //появление формы для добавления автора книге
             new AddAuthor(book).Show();
         }
-
+        //обработка нажатия на кнопку о добавлении книги темы
         private void addBookThemeButton_Click(object sender, EventArgs e)
         {
+            //проверка на то выбрана ли непустая строка
             if (books.Count == 0 || bookDataGridView.CurrentCell.RowIndex == books.Count)
             {
+                //вывод сообщения
                 MessageBox.Show("Выберите какуюто книгу", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //создание экземпляра книги и присвоение ей значений из выбраной строки
             BookFund book = new BookFund();
             book = books[bookDataGridView.CurrentCell.RowIndex];
+            //появление формы для добавления темы книге
             new AddTheme(book).Show();
         }
-
+        //обработка нажатия на кнопку о добавлении читателя
         private void AddReaderButton_Click(object sender, EventArgs e)
         {
+            //проверка на то пустые ли поля
             if (String.IsNullOrEmpty(readerNameTextBox.Text) || String.IsNullOrEmpty(readerPasswordTextBox.Text)||
                 String.IsNullOrEmpty(adressTextBox.Text) ||
                 String.IsNullOrEmpty(phoneTextBox.Text))
             {
+                //вывод сообщения
                 MessageBox.Show("Поля должны быть заполнены!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //проверка на длинну номера телефона
             if (phoneTextBox.Text.Length != 13)
             {
-                MessageBox.Show("Вы ввели слишком некоректный номер телефона.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); ;
+                //вывод сообщения
+                MessageBox.Show("Вы ввели некоректный номер телефона.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); ;
                 return;
             }
             try
             {
+                //добавление нового читателя в базу
                 provider.ReaderProvider.Add(new Models.Reader
                 {
                     ReaderName = readerNameTextBox.Text,
                     Adress = adressTextBox.Text,
                     Phone = phoneTextBox.Text
                 });
+                //добаление учетной записи данному читателю
                 int id = provider.ReaderProvider.GetAll().Max(A => A.ReaderNo);
                 provider.UserProvider.Add(new Models.Users
                 {
@@ -724,47 +738,60 @@ namespace Library.Forms
                     UserPassword = readerPasswordTextBox.Text,
                     UserType = "Читатель"
                 });
+                //вывод сообщения 
                 MessageBox.Show("Добавление успешно!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch
             {
+                //вывод сообщения в случае если поля имеют некоректный ввод для базы данных
                 MessageBox.Show("Вы ввели некоректные данные.", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            //загрузка читателей в data grid
             LoadReaders();
             //обнуление и присвоение стандартных значений полям
             Reset();
         }
-
+        //обработка на выбор читателя из data grid
         private void readerDataGridView_SelectionChanged(object sender, EventArgs e)
         {
+            //присвоение свойству значения
             deleteReaderButton.Enabled = true;
         }
-
+        //обработка нажатия на кнопку о удалении читателя
         private void deleteReaderButton_Click(object sender, EventArgs e)
         {
+            //проверка на то нажато ли да и выбрана ли непустая строка
             if (MessageBox.Show($"Вы точно хотите удалить данного читателя? ", "Внимание", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes&& readerDataGridView.CurrentCell.RowIndex!=readers.Count)
             {
+                //создание экземпляра читателя и присвоение его полям значений из выбраной строки
                 Reader tmpReader = new Reader();
                 tmpReader = readers[readerDataGridView.CurrentCell.RowIndex];
+                //поиск данного читателя среди пользователей
                 var user = provider.UserProvider.GetAll().FirstOrDefault(A => A.UserLogin == "Reader" + tmpReader.ReaderNo.ToString());
+                //удаление читателя из читателей и пользователей
                 provider.UserProvider.Delete(user.IdUser);
                 provider.ReaderProvider.Delete(tmpReader.ReaderNo);
+                //загрузка читателей в data grid
                 LoadReaders();
                 //обнуление и присвоение стандартных значений полям
                 Reset();
             }
         }
-
+        //обработка нажатия на кнопку при поиске читателя по читательскому билету для оформления выдачи
         private void SearchReaderButton_Click(object sender, EventArgs e)
         {
+            //проверка на то пустое ли поле ввода
             if (String.IsNullOrEmpty(readerExtraditionTextBox.Text))
             {
+                //вывод сообщения
                 MessageBox.Show("Введите номер билета", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //заполнения списка читателей для оформления выдачи
             extraditionReaders = provider.ReaderProvider.GetAll().Where(A => A.ReaderNo.ToString().ToLower().Contains(readerExtraditionTextBox.Text.ToLower())).ToList();
             if (extraditionReaders.Count > 0)
             {
+                //загрузка данных в дата грид для оформления выдачи
                 LoadReadersExtradition();
             }
             else
@@ -772,48 +799,60 @@ namespace Library.Forms
                 return;
             }
         }
-
+        //обработка нажатия на кнопку при поиске книги для оформления выдачи
         private void SearchBookButton_Click(object sender, EventArgs e)
         {
+            //проверка на то пустое ли поле ввода
             if (String.IsNullOrEmpty(bookExtraditionTextBox.Text))
             {
+                //вывод сообщения
                 MessageBox.Show("Введите название книги", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //заполнения списка книг для оформления выдачи
             extraditionBooks = provider.BookFundProvider.GetAll().Where(A => A.BookName.ToLower().Contains(bookExtraditionTextBox.Text.ToLower())).ToList();
             if (extraditionBooks.Count > 0)
             {
+                //загрузка данных в дата грид для оформления выдачи
                 LoadBooksExtradition();
             }
             else
                 return;
         }
-
+        //обработка нажатия на кнопку для сбрасывания
         private void resetExtraditionbutton_Click(object sender, EventArgs e)
         {
             //обнуление и присвоение стандартных значений полям
             Reset();
         }
-
+        //обработка нажатия на кнопку для оформления выдачи
         private void ExtraditionButton_Click(object sender, EventArgs e)
         {
+            //проверка на то все ли выбрано
             if (extraditionReaders.Count==0 || extraditionBooks.Count==0)
             {
+                //вывод сообщения
                 MessageBox.Show("Выберите и читателя и книгу", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //проверка на то больше ли дата возврата чем дата выдачи
             if (endDateTimePicker.Value < beginDateTimePicker.Value)
             {
+                //вывод сообщения
                 MessageBox.Show("Дата возврата не может быть меньше даты выдания", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //создание экземпляров книги и читателя из выбранных
             Reader tmpReader = extraditionReaders[readersDataGridView.CurrentCell.RowIndex];
             BookFund tmpBook = extraditionBooks[booksDataGridView.CurrentCell.RowIndex];
+            //проверка на то свободна ли данная книга
             if (!tmpBook.BookStatus)
             {
+                //вывод сообщения
                 MessageBox.Show("Данная книга недоступна.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //создание экземпляра выдачи и присвоение полям значений из выбранных строк
             Extradition tmpExtradition = new Extradition()
             {
                 ReaderNo=tmpReader.ReaderNo,
@@ -823,72 +862,91 @@ namespace Library.Forms
                 DateOfReturn = endDateTimePicker.Value,
                 Information = "Не вернута"
             };
+            //проверка на то есть ли такая информация
             if (provider.ExtraditionProvider.Get(new Models.PK.ExtraditionPK { BookID = tmpExtradition.BookID, LibraryBookNO = tmpExtradition.LibraryBookNO, DateOfExtradition = tmpExtradition.DateOfExtradition }) != null)
             {
+                //вывод сообщения
                 MessageBox.Show("Такая информация уже существует", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //присвоение книге статуса нет в наличии
             tmpBook.BookStatus = false;
             BookFundPK bookFundPK = new BookFundPK()
             {
                 BookID=tmpBook.BookID,
                 LibraryBookNO=tmpBook.LibraryBookNO
             };
+            //обновление информации о книге и добавление выдачи 
             provider.BookFundProvider.Update(bookFundPK,tmpBook);
             provider.ExtraditionProvider.Add(tmpExtradition);
             //обнуление и присвоение стандартных значений полям
             Reset();
         }
-
+        //обработка нажатия на кнопку о поиске учета для определенного читателя
         private void readerSearchReportButton_Click(object sender, EventArgs e)
         {
+            //проверка на пустую строку
             if (String.IsNullOrEmpty(readerReportTextBox.Text))
             {
+                //вывод сообщения
                 MessageBox.Show("Введите номер билета", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //поиск информации для данного читателя
             extraditions = provider.ExtraditionProvider.GetAll().Where(A => A.ReaderNo.ToString().ToLower().Contains(readerReportTextBox.Text.ToLower())).ToList();
             if (extraditions.Count > 0)
-            { 
+            {
+                //загрузка информации в data grid
                 LoadExtraditions();
                 bookSearchReportButton.Enabled = true;   
             }
             else
                 return;
         }
-
+        //обработка нажатия на кнопку о поиске учете для определенной книги
         private void bookSearchReportButton_Click(object sender, EventArgs e)
         {
+            //проверка на пустую строку
             if (String.IsNullOrEmpty(bookReportTextBox.Text))
             {
+                //вывод сообщения
                 MessageBox.Show("Введите название книги", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //поиск информации для данной книги
             extraditions = provider.ExtraditionProvider.GetAll().Where(A => A.BookFund.BookName.ToLower().Contains(bookReportTextBox.Text.ToLower())).ToList();
             if (extraditions.Count > 0)
             {
+                //загрузка информации в data grid
                 LoadExtraditions();
             }
             else
             {
+                //вывод сообщения если книга не выдавалась 
                 MessageBox.Show("Данная книга не выдавалась", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
         }
-
+        //обработка нажатия на кнопку при возврате книги
         private void BackBookButton_Click(object sender, EventArgs e)
         {
+            //проверка на то выбрана ли непустая строка
             if (extraditions.Count == 0)
             {
+                //вывод сообщения
                 MessageBox.Show("Выберите какуюто информацию", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //поиск выбранной строки
             Extradition tmpExtradition = extraditions[reportDataGridView.CurrentCell.RowIndex];
+            //проверка на то вернута ли книга
             if (tmpExtradition.Information == "Вернута")
             {
+                //вывод сообщения
                 MessageBox.Show("Данная книга уже вернута.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //изменение информациио выдаче и о книге
             tmpExtradition.Information = "Вернута";
             tmpExtradition.BookFund.BookStatus = true;
             ExtraditionPK extraditionPK = new ExtraditionPK()
@@ -902,12 +960,13 @@ namespace Library.Forms
                 BookID=tmpExtradition.BookFund.BookID,
                 LibraryBookNO = tmpExtradition.LibraryBookNO
             };
+            //обновление информации
             provider.BookFundProvider.Update(bookFundPK,tmpExtradition.BookFund);
             provider.ExtraditionProvider.Update(extraditionPK, tmpExtradition);
             // обнуление и присвоение стандартных значений полям
             Reset();
         }
-
+        //обработка нажатия на кнопку при получении полной информации о книге
         private void bookInfoButton_Click(object sender, EventArgs e)
         {
             if (books.Count == 0|| bookDataGridView.CurrentCell==null || bookDataGridView.CurrentCell.RowIndex==books.Count)
@@ -918,105 +977,134 @@ namespace Library.Forms
             BookFund tmpBook = books[bookDataGridView.CurrentCell.RowIndex];
             new BookInfo(tmpBook).Show();
         }
-
+        //обработка нажатия на кнопку при получении полной информации о книге
         private void booksExtradInfoButton_Click(object sender, EventArgs e)
         {
+            //проверка на то выбрана ли не пустая строка
             if (extraditionBooks.Count == 0 || booksDataGridView.CurrentCell == null || booksDataGridView.CurrentCell.RowIndex == extraditionBooks.Count)
             {
+                //вывод сообщения
                 MessageBox.Show("Выберите какуюто книгу", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //поиск данной книги
             BookFund tmpBook = extraditionBooks[booksDataGridView.CurrentCell.RowIndex];
+            //появление формы с полной информацией о книге
             new BookInfo(tmpBook).Show();
         }
-
+        //обработка нажатия на кнопку при получении полной информации о книге
         private void booksReportInfoButton_Click(object sender, EventArgs e)
         {
+            //проверка на то выбрана ли не пустая строка
             if (extraditions.Count == 0 || reportDataGridView.CurrentCell == null || reportDataGridView.CurrentCell.RowIndex == extraditions.Count)
             {
+                //вывод сообщения
                 MessageBox.Show("Выберите какуюто книгу", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //поиск данной книги
             BookFund tmpBook = provider.BookFundProvider.GetAll().FirstOrDefault(A=>A.BookID == extraditions[reportDataGridView.CurrentCell.RowIndex].BookID);
+            //появление формы с полной информацией о книге
             new BookInfo(tmpBook).Show();
         }
-
+        //обработка нажатия на кнопку о получении статистики выдач книг
         private void extraditionStatisticButton_Click(object sender, EventArgs e)
         {
+            //получение статистики
             List<KeyValuePair<string, int>> statistics = Statistic.Statistic.GetExtraditionStatistic();
             chart1.DataSource = statistics;
             chart1.Series[0].Name = "Название книги";
             chart1.Series[0].XValueMember = "Key";
             chart1.Series[0].YValueMembers = "Value";
+            //присвоение информации диаграмме
             chart1.DataBind();
         }
-
+        //обработка нажатия на кнопку о получении статистики посещения
         private void visitingStatisticButton_Click(object sender, EventArgs e)
         {
+            //получение статистики
             List<KeyValuePair<string, int>> visitings = Statistic.Statistic.GetVisitingStatistic();
             chart1.DataSource = visitings;
             chart1.Series[0].Name = "ФИО";
             chart1.Series[0].XValueMember = "Key";
             chart1.Series[0].YValueMembers = "Value";
+            //присвоение информации диаграмме
             chart1.DataBind();
         }
-
+        //обработка нажатия на кнопку о получении статистики тематик для каждой книге
         private void themeStatisticButton_Click(object sender, EventArgs e)
         {
+            //получение статистики
             List<KeyValuePair<string, int>> themes = Statistic.Statistic.GetThemeStatistic();
             chart1.DataSource = themes;
             chart1.Series[0].Name = "Тематика";
             chart1.Series[0].XValueMember = "Key";
             chart1.Series[0].YValueMembers = "Value";
+            //присвоение информации диаграмме
             chart1.DataBind();
         }
-
+        //обработка нажатия на кнопку при получении полной информации о книге
         private void bookHistoryInfoButton_Click(object sender, EventArgs e)
         {
+            //проверка на то выбрана ли не пустая строка
             if (readerHistory.Count == 0 || bookHistoryDataGridView.CurrentCell == null || bookHistoryDataGridView.CurrentCell.RowIndex == readerHistory.Count)
             {
+                //вывод сообщения
                 MessageBox.Show("Выберите какуюто книгу", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //поиск данной книги
             BookFund tmpBook = provider.BookFundProvider.GetAll().FirstOrDefault(A => A.BookID == readerHistory[bookHistoryDataGridView.CurrentCell.RowIndex].BookID);
+            //появление формы с полной информацией о книге
             new BookInfo(tmpBook).Show();
         }
-
+        //обработка нажатия на кнопку о редактировании информации о читателе
         private void editReaderButton_Click(object sender, EventArgs e)
         {
+            //присвоение свойствам значений 
             editReaderButton.Enabled = false;
             applyChangesReaderButton.Visible = true;
             readerPassTextBox.ReadOnly = false;
         }
-
+        //обработка нажатия на кнопку применение изменений для читателя
         private void applyChangesReaderButton_Click(object sender, EventArgs e)
         {
+            //проверка на пустое поле
             if (String.IsNullOrEmpty(readerPassTextBox.Text))
             {
+                //вывод сообщения
                 MessageBox.Show("Поля должны быть заполнены!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //получение данной учетной записи 
             var tmpUser = provider.UserProvider.GetAll().FirstOrDefault(A => A.IdUser == user.IdUser);
             tmpUser.UserPassword = readerPassTextBox.Text;
+            //обновление изменений
             provider.UserProvider.Update(tmpUser.IdUser, tmpUser);
+            //вывод сообщения
             MessageBox.Show("Информация сохранена.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //присвоение свойствам значений
             editReaderButton.Enabled = true;
             applyChangesReaderButton.Visible = false;
             readerPassTextBox.ReadOnly = true;
         }
-
+        //обработка нажатия на кнопку для алфавитного каталога
         private void alphaviteButton_Click(object sender, EventArgs e)
         {
+            //настройка data grid
             booksCatalogueForInfo.Clear();
             booksCatalogueDataGridView.ColumnCount = 5;
             booksCatalogueDataGridView.Columns[4].Name = "Автор";
             booksCatalogueDataGridView.Rows.Clear();
             booksCatalogue.Clear();
+            //выбор айдишников всех книг
             List<int> ids = provider.BookFundProvider.GetAll().Select(A => A.BookID).Distinct().ToList();
             foreach (var id in ids)
             {
+                //добавление книг
                 booksCatalogue.Add(provider.BookFundProvider.GetAll().FirstOrDefault(A => A.BookID == id));
             }
+            //объединение таблицы книг и авторов по общим полям
             var tmp = booksCatalogue.Join(provider.AuthorBookFundProvider.GetAll(),
                 A => A.BookID,
                 B => B.BookID,
@@ -1024,16 +1112,19 @@ namespace Library.Forms
             var tmp2 = tmp.Join(provider.AuthorProvider.GetAll(),
                 A => A.AuthorID,
                 B => B.AuthorID,
-                (A, B) => new { BookName = A.BookName, BookID = A.BookID, DateOfPublication = A.DateOfPublication, Capacity = A.Capacity, AuthorName = B.AuthorName }).ToList().OrderBy(A => A.AuthorName).Distinct();
+                (A, B) => new { BookName = A.BookName, BookID = A.BookID, DateOfPublication = A.DateOfPublication, Capacity = A.Capacity, AuthorName = B.AuthorName }).ToList().
+                OrderBy(A => A.AuthorName).Distinct(); //сортировка списка по ФИО автора
             foreach (var book in tmp2)
             {
+                //вывод информации в дата грид
                 booksCatalogueDataGridView.Rows.Add(book.BookID, book.BookName, book.DateOfPublication.ToShortDateString(), book.Capacity, book.AuthorName);
                 booksCatalogueForInfo.Add(provider.BookFundProvider.GetAll().FirstOrDefault(A => A.BookID == book.BookID));
             }
         }
-
+        //обработка нажатия на кнопку для тематического каталога
         private void themeCatologButton_Click(object sender, EventArgs e)
         {
+            //настройка data grid
             booksCatalogueForInfo.Clear();
             booksCatalogueDataGridView.ColumnCount = 6;
             booksCatalogueDataGridView.Columns[4].Name = "Тематика";
@@ -1041,11 +1132,14 @@ namespace Library.Forms
             booksCatalogueDataGridView.Columns[5].Name = "Автор";
             booksCatalogueDataGridView.Rows.Clear();
             booksCatalogue.Clear();
+            //выбор айдишников всех книг
             List<int> ids = provider.BookFundProvider.GetAll().Select(A => A.BookID).Distinct().ToList();
             foreach (var id in ids)
             {
+                //добавление книг
                 booksCatalogue.Add(provider.BookFundProvider.GetAll().FirstOrDefault(A => A.BookID == id));
             }
+            //объединение таблицы книг авторов и тематик по общим полям
             var tmp = booksCatalogue.Join(provider.ThemeBookFundProvider.GetAll(),
                 A => A.BookID,
                 B => B.BookID,
@@ -1061,22 +1155,28 @@ namespace Library.Forms
             var tmp4 = tmp3.Join(provider.AuthorProvider.GetAll(),
                 A => A.AuthorID,
                 B => B.AuthorID,
-                (A, B) => new { BookName = A.BookName, BookID = A.BookID, DateOfPublication = A.DateOfPublication, Capacity = A.Capacity, ThemeName = A.ThemeName, AuthorName = B.AuthorName }).ToList().OrderBy(A=>A.ThemeName).ThenBy(A=>A.AuthorName).Distinct();
+                (A, B) => new { BookName = A.BookName, BookID = A.BookID, DateOfPublication = A.DateOfPublication, Capacity = A.Capacity, ThemeName = A.ThemeName, AuthorName = B.AuthorName }).ToList().
+                OrderBy(A=>A.ThemeName).ThenBy(A=>A.AuthorName).Distinct(); //сортировка по тематике а потом по фио автора
             foreach (var book in tmp4)
             {
+                //загрузка информации в data grid
                 booksCatalogueDataGridView.Rows.Add(book.BookID, book.BookName, book.DateOfPublication.ToShortDateString(), book.Capacity, book.ThemeName,book.BookName);
                 booksCatalogueForInfo.Add(provider.BookFundProvider.GetAll().FirstOrDefault(A => A.BookID == book.BookID));
             }
         }
-
+        //обработка нажатия на кнопку при получении полной информации о книге
         private void bookCatalogueInfoButton_Click(object sender, EventArgs e)
         {
+            //проверка на то выбрана ли не пустая строка
             if (booksCatalogueForInfo.Count == 0 || booksCatalogueDataGridView.CurrentCell == null || booksCatalogueDataGridView.CurrentCell.RowIndex == booksCatalogueForInfo.Count)
             {
+               //вывод сообщения
                 MessageBox.Show("Выберите какуюто книгу", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //поиск данной книги
             BookFund tmpBook = provider.BookFundProvider.GetAll().FirstOrDefault(A => A.BookID == booksCatalogueForInfo[booksCatalogueDataGridView.CurrentCell.RowIndex].BookID);
+            //появление формы с полной информацией о книге
             new BookInfo(tmpBook).Show();
         }
     }
