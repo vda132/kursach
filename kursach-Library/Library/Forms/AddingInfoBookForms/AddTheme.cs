@@ -63,17 +63,23 @@ namespace Library.Forms.AddingInfoBookForms
                 LoadThemes();
             }
         }
-       
+        //обработка нажатия на кнопку добавления темы книге
         private void addThemeBookButton_Click(object sender, EventArgs e)
         {
+            //получение выбранной темы
             Theme tmpTheme = themes[themesDataGridView.CurrentCell.RowIndex];
+            //проверка на то есть ли уже данная тема у книги
             if (provider.ThemeBookFundProvider.GetAll().FirstOrDefault(A => A.ThemeID == tmpTheme.ThemeId && A.BookID == book.BookID) != null)
             {
+                //вывод сообщения
                 MessageBox.Show("Такая информация уже есть.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //получение книги и ее экземпляров
             List<BookFund> tmpBooks = provider.BookFundProvider.GetAll().Where(A => A.BookID == book.BookID).ToList();
+            //создание экземпляра для добавления информации относительно книги и темы
             ThemeBookFund tmpThemeBookFund = new ThemeBookFund();
+            //добавление всем экземплярам книги данной темы
             foreach (var book in tmpBooks)
             {
                 tmpThemeBookFund.ThemeID = tmpTheme.ThemeId;
@@ -81,6 +87,7 @@ namespace Library.Forms.AddingInfoBookForms
                 tmpThemeBookFund.LibraryBookNO = book.LibraryBookNO;
                 provider.ThemeBookFundProvider.Add(tmpThemeBookFund);
             }
+            //закрытие формы
             this.Close();
         }
         //обработка нажатия на кнопку сбрасывания

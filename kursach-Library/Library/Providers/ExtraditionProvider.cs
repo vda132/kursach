@@ -37,7 +37,7 @@ namespace Library.Providers
             Extradition extradition = null;
             using (var connection = GetConnection())
             {
-                var query = $"SELECT BookID, LibraryBookNO, ReaderNo, DateOfExtradition, DateOfReturn, Information FROM AuthorBookFund WHERE BookID = {pk.BookID} AND LibraryBookNO={pk.LibraryBookNO} AND DateOfExtradition='{pk.DateOfExtradition}'";
+                var query = $"SELECT BookID, LibraryBookNO, ReaderNo, DateOfExtradition, DateOfReturn, Information FROM Extradition WHERE BookID = {pk.BookID} AND LibraryBookNO={pk.LibraryBookNO} AND DateOfExtradition='{pk.DateOfExtradition}'";
                 var select = new SqlCommand(query, connection);
                 var result = select.ExecuteReader();
                 if (result.HasRows)
@@ -52,10 +52,6 @@ namespace Library.Providers
                         DateOfReturn=(DateTime)result["DateOfReturn"],
                         Information=(string)result["Information"]
                     };
-                }
-                else
-                {
-                    throw new ArgumentException("Author has not been found.");
                 }
             }
             extradition.Reader = GetReader(extradition);

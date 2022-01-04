@@ -276,6 +276,8 @@ namespace Library.Forms
         {
             //очистка строк
             bookDataGridView.Rows.Clear();
+            //очистка книг
+            books.Clear();
             //заполнение айдишников каждой книги
             List<int> ids = provider.BookFundProvider.GetAll().Select(A => A.BookID).Distinct().ToList();
             foreach(var id in ids)
@@ -415,7 +417,7 @@ namespace Library.Forms
             loginTextBox.ReadOnly = true;
             passwordTextBox.ReadOnly = true;
         }
-        //обработка нажатия на кнопку віход
+        //обработка нажатия на кнопку выход
         private void ExitButton_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show($"Вы точно хотите вернуться на страницу авторизации? ", "Внимание", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -863,7 +865,7 @@ namespace Library.Forms
                 Information = "Не вернута"
             };
             //проверка на то есть ли такая информация
-            if (provider.ExtraditionProvider.Get(new Models.PK.ExtraditionPK { BookID = tmpExtradition.BookID, LibraryBookNO = tmpExtradition.LibraryBookNO, DateOfExtradition = tmpExtradition.DateOfExtradition }) != null)
+            if (provider.ExtraditionProvider.GetAll().FirstOrDefault(A=>A.BookID==tmpExtradition.BookID&&A.DateOfExtradition==tmpExtradition.DateOfExtradition&&A.LibraryBookNO==tmpExtradition.LibraryBookNO&&A.ReaderNo==tmpExtradition.ReaderNo) != null)
             {
                 //вывод сообщения
                 MessageBox.Show("Такая информация уже существует", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -969,12 +971,15 @@ namespace Library.Forms
         //обработка нажатия на кнопку при получении полной информации о книге
         private void bookInfoButton_Click(object sender, EventArgs e)
         {
+            //проверка на то выбрана ли не пустая строка
             if (books.Count == 0|| bookDataGridView.CurrentCell==null || bookDataGridView.CurrentCell.RowIndex==books.Count)
             {
                 MessageBox.Show("Выберите какуюто книгу", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            //поиск данной книги
             BookFund tmpBook = books[bookDataGridView.CurrentCell.RowIndex];
+            //появление формы с полной информацией о книге
             new BookInfo(tmpBook).Show();
         }
         //обработка нажатия на кнопку при получении полной информации о книге
