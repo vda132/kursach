@@ -54,7 +54,6 @@ namespace TVProgram.Forms
             this.Filter = new System.Windows.Forms.Button();
             this.GenresProgramsComboBox = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.UpdateData = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ShowsDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ProgramsDataGrid)).BeginInit();
             this.SuspendLayout();
@@ -291,22 +290,11 @@ namespace TVProgram.Forms
             this.label9.TabIndex = 31;
             this.label9.Text = "Жанр";
             // 
-            // UpdateData
-            // 
-            this.UpdateData.Location = new System.Drawing.Point(1105, 6);
-            this.UpdateData.Name = "UpdateData";
-            this.UpdateData.Size = new System.Drawing.Size(94, 29);
-            this.UpdateData.TabIndex = 33;
-            this.UpdateData.Text = "Обновить";
-            this.UpdateData.UseVisualStyleBackColor = true;
-            this.UpdateData.Click += new System.EventHandler(this.UpdateData_Click);
-            // 
             // ChannelAdminMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1209, 517);
-            this.Controls.Add(this.UpdateData);
             this.Controls.Add(this.GenresProgramsComboBox);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.RemoveProgram);
@@ -369,6 +357,5 @@ namespace TVProgram.Forms
         private System.Windows.Forms.Button Filter;
         private System.Windows.Forms.ComboBox GenresProgramsComboBox;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Button UpdateData;
     }
 }

@@ -44,6 +44,7 @@ namespace TVProgram.Forms
                 ShowName.Visible = false;
 
                 AddEditButton.Text = "Добавить";
+                Text = "Добавить";
             }
             else
             {
@@ -55,6 +56,7 @@ namespace TVProgram.Forms
                 ShowName.Text = currentShow.NameShow;
 
                 AddEditButton.Text = "Изменить";
+                Text = "Изменить";
             }
 
             // Fill shows
@@ -71,6 +73,15 @@ namespace TVProgram.Forms
             // Fill times
             StartTimeTextBox.Text = "00:00";
             EndTimeTextBox.Text = "23:59";
+
+            if (program is not null)
+            {
+                ShowsComboBox.Text = program.Show.NameShow;
+                LeftComboBox.Text = program.StartWeekDay;
+                RightComboBox.Text = program.EndWeekDay;
+                StartTimeTextBox.Text = program.StartTime.ToString();
+                EndTimeTextBox.Text = program.EndTime.ToString();
+            }
         }
 
         #region Handlers

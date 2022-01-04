@@ -126,7 +126,8 @@ namespace TVProgram.Forms
             this.Controls.Add(this.label1);
             this.Controls.Add(this.submitButton);
             this.Name = "Registration";
-            this.Text = "Registration";
+            this.Text = "Регистрация";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Registration_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
 

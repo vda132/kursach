@@ -14,6 +14,7 @@ namespace TVProgram.Forms
             InitializeComponent();
         }
 
+        #region Handlers
         private void submitButton_Click(object sender, EventArgs e)
         {
             var login = loginTextBox.Text;
@@ -48,6 +49,12 @@ namespace TVProgram.Forms
         {
             GoBackToPreviousForm();
         }
+
+        private void Registration_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            previousForm.Show();
+        }
+        #endregion
 
         private void GoBackToPreviousForm()
         {

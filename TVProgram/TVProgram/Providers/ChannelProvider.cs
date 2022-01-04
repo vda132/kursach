@@ -20,11 +20,31 @@ namespace TVProgram.Providers
             }
         }
 
+        public void AddShow(int channelId, int showId)
+        {
+            using (var connection = GetConnection())
+            {
+                var query = $"INSERT INTO ShowChannel(IDShow, IDChannel) VALUES ({showId}, {channelId})";
+                var insert = new SqlCommand(query, connection);
+                insert.ExecuteNonQuery();
+            }
+        }
+
         public override void Delete(int pk)
         {
             using (var connection = GetConnection())
             {
                 var query = $"DELETE FROM Channel WHERE IDChannel = {pk}";
+                var delete = new SqlCommand(query, connection);
+                delete.ExecuteNonQuery();
+            }
+        }
+
+        public void DeleteShow(int channelId, int showId)
+        {
+            using (var connection = GetConnection())
+            {
+                var query = $"DELETE FROM Channel WHERE IDChannel = {channelId} AND IDShow = {showId}";
                 var delete = new SqlCommand(query, connection);
                 delete.ExecuteNonQuery();
             }

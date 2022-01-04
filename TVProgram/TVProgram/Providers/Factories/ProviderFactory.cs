@@ -1,7 +1,4 @@
-﻿using TVProgram.Models;
-using TVProgram.Providers.Abstract;
-
-namespace TVProgram.Providers.Factories
+﻿namespace TVProgram.Providers.Factories
 {
     class ProviderFactory
     {
@@ -11,19 +8,19 @@ namespace TVProgram.Providers.Factories
         public static ProviderFactory Instance { get => instance == null ? (instance = new ProviderFactory()) : instance; }
         private ProviderFactory()
         {
-            ChannelProvider = new ChannelProvider();
-            GenreProvider = new GenreProvider();
-            ShowProvider = new ShowProvider();
-            ProgramProvider = new ProgramProvider();
-            UserProvider = new UserProvider();
+            ChannelProvider = new();
+            GenreProvider = new();
+            ShowProvider = new();
+            ProgramProvider = new();
+            UserProvider = new();
         }
         #endregion
 
         // Providers
-        public CrudProviderBase<Models.TVChannel, int> ChannelProvider { get; init; }
-        public CrudProviderBase<Models.TVGenre, int> GenreProvider { get; init; }
-        public CrudProviderBase<Models.TVShow, int> ShowProvider { get; init; }
-        public CrudProviderBase<Models.TVProgram, TVProgramPK> ProgramProvider { get; init; }
+        public ChannelProvider ChannelProvider { get; init; }
+        public GenreProvider GenreProvider { get; init; }
+        public ShowProvider ShowProvider { get; init; }
+        public ProgramProvider ProgramProvider { get; init; }
         public UserProvider UserProvider { get; init; }
     }
 }

@@ -94,6 +94,7 @@ namespace TVProgram.Forms
             // 
             this.PasswordTextBox.Location = new System.Drawing.Point(12, 138);
             this.PasswordTextBox.Name = "PasswordTextBox";
+            this.PasswordTextBox.PasswordChar = '*';
             this.PasswordTextBox.Size = new System.Drawing.Size(246, 27);
             this.PasswordTextBox.TabIndex = 11;
             // 

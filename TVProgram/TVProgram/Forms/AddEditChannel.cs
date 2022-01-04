@@ -14,6 +14,14 @@ namespace TVProgram.Forms
         {
             InitializeComponent();
 
+            if (channel is not null)
+            {
+                ChannelTextBox.Text = channel.NameChannel;
+                var userChannel = ProviderFactory.Instance.UserProvider.GetAll().First(x => x.Status.Equals(channel.NameChannel));
+                LoginTextBox.Text = userChannel.Login;
+                PasswordTextBox.Text = userChannel.Password;
+            }
+
             // If we don't transmit genre as parameter we can add genre
             // Otherwise we can edit transmited genre
             if (channel is null)
@@ -52,7 +60,7 @@ namespace TVProgram.Forms
             {
                 if (!string.IsNullOrEmpty(name))
                 {
-                    if (TryEdit(name)) BackToPrevious();
+                    if (TryEdit(name, login, password)) BackToPrevious();
                     else MessageBox.Show("Не получилось изменить канал", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
@@ -78,12 +86,25 @@ namespace TVProgram.Forms
             return true;
         }
 
-        private bool TryEdit(string channelName)
+        private bool TryEdit(string channelName, string channelLogin, string channelPassword)
         {
-            if (!CheckNameOnIdentity(channelName))
+            var userChannel = ProviderFactory.Instance.UserProvider.GetAll().First(x => x.Status.Equals(editableChannel.NameChannel));
+
+            // If name is not changed name passes validation
+            var nameValidate = channelName.Equals(editableChannel.NameChannel) ? true : CheckNameOnIdentity(channelName); 
+            // If login is not changed login passes validation
+            var loginValid = channelLogin.Equals(userChannel.Login) ? true : CheckLoginOnIdentity(channelLogin);
+
+            if (!nameValidate || !loginValid)
                 return false;
 
             ProviderFactory.Instance.ChannelProvider.Update(editableChannel.IDChannel, new TVChannel { NameChannel = channelName });
+            ProviderFactory.Instance.UserProvider.Update(userChannel.Login, new User 
+            {
+                Login = channelLogin, 
+                Password = channelPassword, 
+                Status = channelName 
+            });
             return true;
         }
 

@@ -28,6 +28,7 @@ namespace TVProgram.Forms
             UpdateChannelsDataGrid();
             ChannelsDataGrid.Columns["IDChannel"].Visible = false;
             ChannelsDataGrid.Columns["Programs"].Visible = false;
+            ChannelsDataGrid.Columns["Shows"].Visible = false;
         }
 
         #region Handlers
@@ -47,14 +48,16 @@ namespace TVProgram.Forms
         // Adding
         private void AddGenreButton_Click(object sender, EventArgs e)
         {
-            new AddEditGenre().Show();
-            UpdateGenres();
+            var form = new AddEditGenre();
+            form.FormClosed += AddEditFormClosed;
+            form.Show();
         }
 
         private void AddChannelButton_Click(object sender, EventArgs e)
         {
-            new AddEditChannel().Show();
-            UpdateChannels();
+            var form = new AddEditChannel();
+            form.FormClosed += AddEditFormClosed;
+            form.Show();
         }
 
         // Removing
@@ -78,6 +81,8 @@ namespace TVProgram.Forms
             if (selectedChannel is not null)
             {
                 ProviderFactory.Instance.ChannelProvider.Delete(selectedChannel.IDChannel);
+                var userChannel = ProviderFactory.Instance.UserProvider.GetAll().First(x => x.Status.Equals(selectedChannel.NameChannel));
+                ProviderFactory.Instance.UserProvider.Delete(userChannel.Login);
                 UpdateChannels();
             }
             else
@@ -92,8 +97,9 @@ namespace TVProgram.Forms
             var selectedGenre = GetSelectedGenre();
             if (selectedGenre is not null) 
             {
-                new AddEditGenre(selectedGenre).Show();
-                UpdateGenres();
+                var form = new AddEditGenre(selectedGenre);
+                form.FormClosed += AddEditFormClosed;
+                form.Show();
             }
         }
 
@@ -102,20 +108,15 @@ namespace TVProgram.Forms
             var selectedChannel = GetSelectedChannel();
             if (selectedChannel is not null)
             {
-                new AddEditChannel(selectedChannel).Show();
-                UpdateChannels();
+                var form = new AddEditChannel(selectedChannel);
+                form.FormClosed += AddEditFormClosed;
+                form.Show();
             }
         }
 
         private void AdminMenu_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
-        }
-
-        private void UpdateData_Click(object sender, EventArgs e)
-        {
-            UpdateGenres();
-            UpdateChannels();
         }
         #endregion
 
@@ -141,6 +142,12 @@ namespace TVProgram.Forms
             var index = ChannelsDataGrid.SelectedRows[0].Index;
             // Get selected channel
             return displayChannels[index];
+        }
+
+        private void AddEditFormClosed(object sender, FormClosedEventArgs e)
+        {
+            UpdateGenres();
+            UpdateChannels();
         }
 
         private void UpdateGenres()

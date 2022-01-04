@@ -14,6 +14,11 @@ namespace TVProgram.Forms
         {
             InitializeComponent();
 
+            if (genre is not null)
+            {
+                GenreTextBox.Text = genre.NameGenre;
+            }
+
             // If we don't transmit genre as parameter we can add genre
             // Otherwise we can edit transmited genre
             if (genre is null)
@@ -68,7 +73,10 @@ namespace TVProgram.Forms
 
         private bool TryAdd(string genreName)
         {
-            if (!CheckOnIdentity(genreName))
+            // If name is not changed name passes validation
+            var nameValidate = editableGenre.NameGenre.Equals(genreName) ? true : !CheckOnIdentity(genreName);
+
+            if (!nameValidate)
                 return false;
 
             ProviderFactory.Instance.GenreProvider.Add(new TVGenre { NameGenre = genreName });
@@ -77,7 +85,8 @@ namespace TVProgram.Forms
 
         private bool TryEdit(string genreName)
         {
-            if (!CheckOnIdentity(genreName))
+            var nameValidate = genreName.Equals(editableGenre.NameGenre) ? true : CheckOnIdentity(genreName);
+            if (!nameValidate)
                 return false;
 
             ProviderFactory.Instance.GenreProvider.Update(editableGenre.IDGenre, new TVGenre { NameGenre = genreName });

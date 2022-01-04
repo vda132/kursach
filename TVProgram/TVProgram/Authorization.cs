@@ -37,6 +37,7 @@ namespace TVProgram
                 else
                 {
                     MessageBox.Show("Проверьте правильность пароля", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
             }
             catch (ArgumentException ex)

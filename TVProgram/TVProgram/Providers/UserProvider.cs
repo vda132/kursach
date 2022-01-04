@@ -63,7 +63,7 @@ namespace TVProgram.Providers
         {
             using (var connection = GetConnection())
             {
-                var query = $"UPDATE UserTable SET UserPassword = '{entity.Password}', UserStatus = '{entity.Status}' WHERE UserLogin = '{entity.Login}'";
+                var query = $"UPDATE UserTable SET UserLogin = '{entity.Login}', UserPassword = '{entity.Password}', UserStatus = '{entity.Status}' WHERE UserLogin = '{pk}'";
                 var update = new SqlCommand(query, connection);
                 update.ExecuteNonQuery();
             }

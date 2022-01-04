@@ -85,23 +85,23 @@ namespace TVProgram.Forms
         #region Handlers
         private void AddShowButton_Click(object sender, EventArgs e)
         {
-            new AddEditShow().Show();
-            LoadShows();
-            FilterShows();
-            UpdateShowsDataGrid();
+            var form = new AddEditShow();
+            form.FormClosed += AddEditFormClosed;
+            form.Show();
         }
 
         private void RemoveShowButton_Click(object sender, EventArgs e)
         {
             ProviderFactory.Instance.ShowProvider.Delete(GetSelectedShow().IDShow);
+            LoadShows();
+            FilterShows();
         }
 
         private void ShowsDataGrid_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            new AddEditShow(GetSelectedShow()).Show();
-            LoadShows();
-            FilterShows();
-            UpdateShowsDataGrid();
+            var form = new AddEditShow(GetSelectedShow());
+            form.FormClosed += AddEditFormClosed;
+            form.Show();
         }
 
         // Filter
@@ -138,16 +138,16 @@ namespace TVProgram.Forms
                 StartDayOfWeek = selectedProgram.StartWeekDay,
                 StartTime = selectedProgram.StartTime
             });
-            new AddEditProgram(editableProgram).Show();
-            LoadPrograms();
-            FilterPrograms();
+            var form = new AddEditProgram(editableProgram);
+            form.FormClosed += AddEditFormClosed;
+            form.Show();
         }
 
         private void AddProgram_Click(object sender, EventArgs e)
         {
-            new AddEditProgram().Show();
-            LoadPrograms();
-            FilterPrograms();
+            var form = new AddEditProgram();
+            form.FormClosed += AddEditFormClosed;
+            form.Show();
         }
 
         private void RemoveProgram_Click(object sender, EventArgs e)
@@ -190,17 +190,16 @@ namespace TVProgram.Forms
         {
             selectedRightDay = daysOfWeek.GetElement(RightComboBox.Text);
         }
+        #endregion
 
-        private void UpdateData_Click(object sender, EventArgs e)
+        private void AddEditFormClosed(object sender, FormClosedEventArgs e)
         {
             LoadShows();
             FilterShows();
-            UpdateShowsDataGrid();
 
             LoadPrograms();
             FilterPrograms();
         }
-        #endregion
 
         private void LoadShows()
         {
